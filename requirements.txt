@@ -1,4 +1,10 @@
-fastapi>=0.68.0,<0.69.0
-pydantic>=1.8.0,<2.0.0
-uvicorn>=0.15.0,<0.16.0
+fastapi==0.110.2
+pydantic==2.7.1
+uvicorn==0.15.0
 aiofiles==23.2.1
+PyJWT==2.8.0
+pydantic[email]==2.7.1
+SQLAlchemy==2.0.29
+psycopg2-binary==2.9.5
+fastapi-pagination==0.11.3
+requests==2.25.1
