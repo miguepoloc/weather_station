@@ -1,0 +1,62 @@
+[
+    {
+        "nit": "123456789",
+        "info_int": [
+            {
+                "codigo_sic": "1234",
+                "operador": "operador_1",
+                "municipio": "municipio_1"
+            },
+            {
+                "codigo_sic": "1237",
+                "operador": "operador_1",
+                "municipio": "municipio_1"
+            },
+            {
+                "codigo_sic": "123478",
+                "operador": "operador_2",
+                "municipio": "municipio_2"
+            }
+        ]
+    },
+    {
+        "nit": "9876345",
+        "info_int": [
+            {
+                "codigo_sic": "1234",
+                "operador": "operador_1",
+                "municipio": "municipio_1"
+            },
+            {
+                "codigo_sic": "1237",
+                "operador": "operador_1",
+                "municipio": "municipio_1"
+            },
+            {
+                "codigo_sic": "123478",
+                "operador": "operador_2",
+                "municipio": "municipio_2"
+            }
+        ]
+    },
+    {
+        "nit": "11123523",
+        "info_int": [
+            {
+                "codigo_sic": "1231524",
+                "operador": "operador_3",
+                "municipio": "municipio_1"
+            },
+            {
+                "codigo_sic": "12312",
+                "operador": "operador_1",
+                "municipio": "municipio_1"
+            },
+            {
+                "codigo_sic": "123478",
+                "operador": "operador_2",
+                "municipio": "municipio_2"
+            }
+        ]
+    }
+]
