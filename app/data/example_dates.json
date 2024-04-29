@@ -1,0 +1,164 @@
+[
+    {
+        "nit": "123456789",
+        "codigo_sic": "1234",
+        "fecha": "2019-01-01",
+        "f_activa": 1000,
+        "f_penalizada": 20,
+        "kw_activa": 100,
+        "kw_penalizada": 2
+    },
+    {
+        "nit": "123456789",
+        "codigo_sic": "1237",
+        "fecha": "2019-01-01",
+        "f_activa": 1500,
+        "f_penalizada": 10,
+        "kw_activa": 150,
+        "kw_penalizada": 1
+    },
+    {
+        "nit": "123456789",
+        "codigo_sic": "123478",
+        "fecha": "2019-01-01",
+        "f_activa": 2500,
+        "f_penalizada": 50,
+        "kw_activa": 250,
+        "kw_penalizada": 5
+    },
+    {
+        "nit": "123456789",
+        "codigo_sic": "1234",
+        "fecha": "2019-02-01",
+        "f_activa": 1000,
+        "f_penalizada": 20,
+        "kw_activa": 100,
+        "kw_penalizada": 2
+    },
+    {
+        "nit": "123456789",
+        "codigo_sic": "1237",
+        "fecha": "2019-02-01",
+        "f_activa": 1600,
+        "f_penalizada": 10,
+        "kw_activa": 160,
+        "kw_penalizada": 1
+    },
+    {
+        "nit": "123456789",
+        "codigo_sic": "123478",
+        "fecha": "2019-02-01",
+        "f_activa": 2600,
+        "f_penalizada": 50,
+        "kw_activa": 260,
+        "kw_penalizada": 5
+    },
+    {
+        "nit": "9876345",
+        "codigo_sic": "1234",
+        "fecha": "2019-01-01",
+        "f_activa": 3500,
+        "f_penalizada": 30,
+        "kw_activa": 350,
+        "kw_penalizada": 3
+    },
+    {
+        "nit": "9876345",
+        "codigo_sic": "1237",
+        "fecha": "2019-01-01",
+        "f_activa": 2500,
+        "f_penalizada": 50,
+        "kw_activa": 250,
+        "kw_penalizada": 5
+    },
+    {
+        "nit": "9876345",
+        "codigo_sic": "123478",
+        "fecha": "2019-01-01",
+        "f_activa": 900,
+        "f_penalizada": 20,
+        "kw_activa": 90,
+        "kw_penalizada": 2
+    },
+    {
+        "nit": "9876345",
+        "codigo_sic": "1234",
+        "fecha": "2019-02-01",
+        "f_activa": 3600,
+        "f_penalizada": 30,
+        "kw_activa": 360,
+        "kw_penalizada": 3
+    },
+    {
+        "nit": "9876345",
+        "codigo_sic": "1237",
+        "fecha": "2019-02-01",
+        "f_activa": 2600,
+        "f_penalizada": 50,
+        "kw_activa": 260,
+        "kw_penalizada": 5
+    },
+    {
+        "nit": "9876345",
+        "codigo_sic": "123478",
+        "fecha": "2019-02-01",
+        "f_activa": 900,
+        "f_penalizada": 20,
+        "kw_activa": 90,
+        "kw_penalizada": 2
+    },
+    {
+        "nit": "11123523",
+        "codigo_sic": "1231524",
+        "fecha": "2019-01-01",
+        "f_activa": 4500,
+        "f_penalizada": 10,
+        "kw_activa": 450,
+        "kw_penalizada": 1
+    },
+    {
+        "nit": "11123523",
+        "codigo_sic": "12312",
+        "fecha": "2019-01-01",
+        "f_activa": 2500,
+        "f_penalizada": 50,
+        "kw_activa": 250,
+        "kw_penalizada": 5
+    },
+    {
+        "nit": "11123523",
+        "codigo_sic": "123478",
+        "fecha": "2019-01-01",
+        "f_activa": 7500,
+        "f_penalizada": 10,
+        "kw_activa": 750,
+        "kw_penalizada": 1
+    },
+    {
+        "nit": "11123523",
+        "codigo_sic": "1231524",
+        "fecha": "2019-02-01",
+        "f_activa": 4600,
+        "f_penalizada": 10,
+        "kw_activa": 460,
+        "kw_penalizada": 1
+    },
+    {
+        "nit": "11123523",
+        "codigo_sic": "12312",
+        "fecha": "2019-02-01",
+        "f_activa": 2600,
+        "f_penalizada": 50,
+        "kw_activa": 260,
+        "kw_penalizada": 5
+    },
+    {
+        "nit": "11123523",
+        "codigo_sic": "123478",
+        "fecha": "2019-02-01",
+        "f_activa": 7600,
+        "f_penalizada": 10,
+        "kw_activa": 760,
+        "kw_penalizada": 1
+    }
+]
