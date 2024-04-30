@@ -1,10 +1,10 @@
 from datetime import datetime
+from typing import Any
 
 from sqlalchemy import Boolean, Column, DateTime, Enum, Float, ForeignKey, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
-from typing import Any
 
 Base: Any = declarative_base()
 
@@ -76,3 +76,29 @@ class NodesStorage(BaseModel):
     phosphorus_soil = Column(Float, nullable=False)
     potassium_soil = Column(Float, nullable=False)
     battery_level = Column(Float, nullable=False)
+
+
+class User(BaseModel):
+    __tablename__: str = 'user'
+
+    id = Column(Integer, primary_key=True)
+    email = Column(String(255), unique=True)
+    password = Column(String(255))
+    first_name = Column(String(100))
+    last_name = Column(String(100))
+    document = Column(String(50), nullable=True)
+    code_phone = Column(String(10), nullable=True)
+    phone_number = Column(String(50), nullable=True)
+    is_admin = Column(Boolean, default=False)
+    is_superuser = Column(Boolean, default=False)
+    profile_image = Column(String(250), nullable=True)
+    city = Column(String(100), nullable=True)
+    first_name = Column(String(100))
+    last_name = Column(String(100))
+    document = Column(String(50), nullable=True)
+    code_phone = Column(String(10), nullable=True)
+    phone_number = Column(String(50), nullable=True)
+    is_admin = Column(Boolean, default=False)
+    is_superuser = Column(Boolean, default=False)
+    profile_image = Column(String(250), nullable=True)
+    city = Column(String(100), nullable=True)
