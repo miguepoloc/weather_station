@@ -1,24 +1,24 @@
 from abc import ABC, abstractmethod
 from itertools import groupby
 from operator import attrgetter
-from typing import List
+from typing import Optional
 
-from nodes.schemas import NodesStorageModel
+from nodes.schemas import NodesStorageModel, NodeType
 
 
 class NodesDataStrategy(ABC):
     @abstractmethod
-    def get_nodes_data(self, data: List[NodesStorageModel]) -> List[NodesStorageModel]:
+    def get_nodes_data(self, data: list[NodesStorageModel]) -> list[NodesStorageModel]:
         pass
 
 
 class TotalNodesData(NodesDataStrategy):
-    def get_nodes_data(self, data: List[NodesStorageModel]) -> List[NodesStorageModel]:
+    def get_nodes_data(self, data: list[NodesStorageModel]) -> list[NodesStorageModel]:
         return data
 
 
 class HoursNodesData(NodesDataStrategy):
-    def get_nodes_data(self, data: List[NodesStorageModel]) -> List[NodesStorageModel]:
+    def get_nodes_data(self, data: list[NodesStorageModel]) -> list[NodesStorageModel]:
         for d in data:
             d.hour = d.date_time.hour
 
@@ -53,7 +53,7 @@ class HoursNodesData(NodesDataStrategy):
 
 
 class DaysNodesData(NodesDataStrategy):
-    def get_nodes_data(self, data: List[NodesStorageModel]) -> List[NodesStorageModel]:
+    def get_nodes_data(self, data: list[NodesStorageModel]) -> list[NodesStorageModel]:
         # Add the date to each element of data with out the hour
         for d in data:
             d.date = d.date_time.date()
@@ -88,10 +88,36 @@ class DaysNodesData(NodesDataStrategy):
         return averaged_data
 
 
-def get_strategy_format_data(format: str) -> NodesDataStrategy:
-    format_options: dict = {
-        "total": TotalNodesData(),
-        "hour": HoursNodesData(),
-        "day": DaysNodesData(),
-    }
-    return format_options.get(format, TotalNodesData())
+class NodeCreation(ABC):
+    @abstractmethod
+    def __init__(self, name: str, description: Optional[str], latitude: float, longitude: float) -> None:
+        self.name: str = name
+        self.description: str | None = description
+        self.latitude: float = latitude
+        self.longitude: float = longitude
+        self.type: NodeType
+
+
+class NodeFather(NodeCreation):
+    def __init__(self, name: str, description: Optional[str], latitude: float, longitude: float):
+        super().__init__(name=name, description=description, latitude=latitude, longitude=longitude)
+        self.type = NodeType.MASTER
+
+
+class NodeChild(NodeCreation):
+    def __init__(self, name: str, description: Optional[str], latitude: float, longitude: float):
+        super().__init__(name=name, description=description, latitude=latitude, longitude=longitude)
+        self.type = NodeType.WORKER
+
+
+class NodoFactory:
+    @staticmethod
+    def create_node(
+        type_node: NodeType, name: str, description: Optional[str], latitude: float, longitude: float
+    ) -> NodeCreation:
+        if type_node == NodeType.MASTER:
+            return NodeFather(name=name, description=description, latitude=latitude, longitude=longitude)
+        elif type_node == NodeType.WORKER:
+            return NodeChild(name=name, description=description, latitude=latitude, longitude=longitude)
+        else:
+            raise ValueError(f"Invalid type {type_node} to create node")
