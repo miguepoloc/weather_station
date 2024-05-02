@@ -4,10 +4,9 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from database import get_db
-from models import Nodes, NodesStorage
-from nodes.schemas import NodeModel, NodesStorageModel, NodeType
-from nodes.service import NodeCreation, NodesDataStrategy, NodoFactory
-from nodes.utils import get_strategy_format_data
+from models import Nodes
+from nodes.factory import NodeCreation, NodoFactory
+from schemas import NodeModel, NodeType
 
 router = APIRouter()
 
@@ -19,31 +18,7 @@ def get_nodes(db: Session = Depends(get_db)) -> list[NodeModel]:
     return result
 
 
-@router.get("/data")
-def get_nodes_data(
-    node_id: int,
-    start_date: str,
-    end_date: str,
-    limit: int = 10,
-    db: Session = Depends(get_db),
-    format: NodesDataStrategy = Depends(get_strategy_format_data),
-) -> list[NodesStorageModel]:
-    nodes_storage: list[NodesStorage] = (
-        db.query(NodesStorage)
-        .filter(
-            NodesStorage.node_id == node_id,
-            NodesStorage.date_time >= start_date,
-            NodesStorage.date_time <= end_date,
-        )
-        .all()
-    )
-
-    result: list = format.get_nodes_data(data=nodes_storage)[:limit]
-
-    return result
-
-
-@router.post("/create_node")
+@router.post("/create")
 def create_node(
     name: str,
     description: Optional[str],

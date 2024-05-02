@@ -20,7 +20,7 @@ class NodeModel(BaseModel):
 
 
 class NodesStorageModel(BaseModel):
-    id: int
+    id: Optional[int] = None
     node_id: int
     date_time: Optional[datetime] = None
     temperature: float
