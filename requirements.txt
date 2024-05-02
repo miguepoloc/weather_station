@@ -8,3 +8,4 @@ SQLAlchemy==2.0.29
 psycopg2-binary==2.9.5
 fastapi-pagination==0.11.3
 requests==2.25.1
+resend==0.8.0
