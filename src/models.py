@@ -79,7 +79,7 @@ class NodesStorage(BaseModel):
 
 
 class User(BaseModel):
-    __tablename__: str = 'user'
+    __tablename__: str = 'user_user'
 
     id = Column(Integer, primary_key=True)
     email = Column(String(255), unique=True)

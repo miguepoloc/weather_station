@@ -38,3 +38,21 @@ class NodesStorageModel(BaseModel):
     battery_level: float
     hour: Optional[int] = None  # This field is only used in the HoursNodesData strategy
     date: Optional[datetime] = None  # This field is only used in the DaysNodesData strategy
+
+
+class UserModel(BaseModel):
+    id: int
+    email: str
+    password: str
+    first_name: str
+    last_name: str
+    document: Optional[str] = None
+    code_phone: Optional[str] = None
+    phone_number: Optional[str] = None
+    is_admin: bool = False
+    is_superuser: bool = False
+    profile_image: Optional[str] = None
+    city: Optional[str] = None
+
+    class Config:
+        orm_mode = True
