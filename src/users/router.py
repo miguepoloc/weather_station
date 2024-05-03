@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
-from authorizer import Hasher, Token
+from authorizer import Hasher, Authorizer
 from database import get_db
 from models import User
 from repository import get_user
@@ -30,7 +30,7 @@ async def signin(
             detail=error_detail,
         )
     try:
-        token: str = Token().create_access_token(user_id=user.id)
+        token: str = Authorizer().create_access_token(user_id=user.id)
 
         return {"status": "success", "data": token}
 

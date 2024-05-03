@@ -5,14 +5,18 @@ This module contains the authorizer function to validate the JWT token.
 import time
 
 import jwt
-from constants import EnvironmentVariables
-from fastapi import HTTPException, Request
+from fastapi import Depends, HTTPException, Request, status
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from passlib.context import CryptContext
 
+from constants import EnvironmentVariables
 
-class Token:
+security = HTTPBearer()
+
+
+class Authorizer:
     """
-    The Token class provides methods for creating, validating, and decoding JWT tokens.
+    The Authorizer class provides methods for creating, validating, and decoding JWT tokens.
     """
 
     def create_access_token(self, user_id: int) -> str:
@@ -50,7 +54,7 @@ class Token:
                 - 401 Unauthorized if the token is not provided.
         """
         try:
-            return jwt.decode(token, key=EnvironmentVariables.SECRET_API_KEY, algorithm=EnvironmentVariables.ALGORITHM)
+            return jwt.decode(token, key=EnvironmentVariables.SECRET_API_KEY, algorithms=EnvironmentVariables.ALGORITHM)
         except jwt.ExpiredSignatureError:
             raise HTTPException(status_code=401, detail="Token expired")
         except jwt.InvalidTokenError:
@@ -85,6 +89,20 @@ class Token:
             raise HTTPException(status_code=401, detail="Invalid token")
         except Exception:
             raise HTTPException(status_code=401, detail="You are not permission")
+
+
+async def get_current_user(
+    credentials: HTTPAuthorizationCredentials = Depends(security), authorizer: Authorizer = Depends(Authorizer)
+) -> dict[str, str]:
+    try:
+        payload: dict[str, str] = authorizer.validate_and_decode_token(credentials.credentials)
+    except HTTPException:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Could not validate credentials",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    return payload
 
 
 class Hasher:

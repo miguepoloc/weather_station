@@ -2,11 +2,11 @@ from typing import Optional
 
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-
 from database import get_db
 from models import Nodes
 from nodes.factory import NodeCreation, NodoFactory
 from schemas import NodeModel, NodeType
+from authorizer import get_current_user
 
 router = APIRouter()
 
@@ -26,6 +26,7 @@ def create_node(
     longitude: float,
     type_node: NodeType,
     db: Session = Depends(get_db),
+    current_user: dict[str, str] = Depends(get_current_user),
 ) -> NodeModel:
     node: NodeCreation = NodoFactory.create_node(
         type_node=type_node, name=name, description=description, latitude=latitude, longitude=longitude
