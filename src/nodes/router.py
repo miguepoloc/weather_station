@@ -2,11 +2,11 @@ from typing import Optional
 
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from database_adapter import get_db
-from models import Nodes
-from nodes.factory import NodeCreation, NodoFactory
-from schemas import NodeModel, NodeType
-from authorizer import get_current_user
+from src.database_adapter import get_db
+from src.models import Nodes
+from src.nodes.factory import NodeCreation, NodoFactory
+from src.schemas import NodeModel, NodeType
+from src.authorizer import get_current_user
 
 router = APIRouter()
 

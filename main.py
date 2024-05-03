@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 
-from data.router import router as data_router
-from nodes.router import router as nodes_router
-from users.router import router as users_router
+from src.data.router import router as data_router
+from src.nodes.router import router as nodes_router
+from src.users.router import router as users_router
 
 app = FastAPI()
 app.include_router(nodes_router, prefix="/nodes", tags=["nodes"])

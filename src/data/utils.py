@@ -1,4 +1,4 @@
-from data.strategy import DaysNodesData, HoursNodesData, NodesDataStrategy, TotalNodesData
+from src.data.strategy import DaysNodesData, HoursNodesData, NodesDataStrategy, TotalNodesData
 
 
 def get_strategy_format_data(format: str) -> NodesDataStrategy:

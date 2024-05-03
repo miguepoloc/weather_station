@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Optional
 
-from schemas import NodeType
+from src.schemas import NodeType
 
 
 class NodeCreation(ABC):

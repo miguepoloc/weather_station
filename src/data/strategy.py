@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from itertools import groupby
 from operator import attrgetter
 
-from schemas import NodesStorageModel
+from src.schemas import NodesStorageModel
 
 
 class NodesDataStrategy(ABC):
