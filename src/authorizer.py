@@ -30,10 +30,10 @@ class Authorizer:
             str: The encoded JWT access token.
         """
         data: dict[str, int] = {"sub": user_id}
-        expires_at: int = int(time.time()) + EnvironmentVariables.TOKEN_API_EXPIRATION
+        expires_at: int = int(time.time()) + 3600
         data["expires_at"] = expires_at
         encode_data: str = jwt.encode(
-            payload=data, key=EnvironmentVariables.SECRET_API_KEY, algorithm=EnvironmentVariables.ALGORITHM
+            payload=data, key="secret_key", algorithm="HS256"
         )
         return encode_data
 
@@ -54,7 +54,7 @@ class Authorizer:
                 - 401 Unauthorized if the token is not provided.
         """
         try:
-            return jwt.decode(token, key=EnvironmentVariables.SECRET_API_KEY, algorithms=EnvironmentVariables.ALGORITHM)
+            return jwt.decode(token, key="secret_key", algorithms="HS256")
         except jwt.ExpiredSignatureError:
             raise HTTPException(status_code=401, detail="Token expired")
         except jwt.InvalidTokenError:
