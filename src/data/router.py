@@ -7,6 +7,8 @@ from src.data.utils import get_strategy_format_data
 from src.database import get_db
 from src.models import NodesStorage
 from src.schemas import NodesStorageModel
+from src.data.decorator_tiquetes import comprar_tickets
+from src.data.facade_tiquetes import comprar_tickets_facade, ticket_service
 
 router = APIRouter()
 
@@ -65,3 +67,11 @@ def save_data(node_data: NodesStorageModel, db: Session = Depends(get_db)) -> No
 
     node_subject.check_battery()
     return node_data
+
+@router.get("/comprar_tickets_decorator")
+def comprar_tickets(destination: str, tickets_requested: int):
+    return {"message": f"¡Compra exitosa! Se han comprado {tickets_requested} tickets para {destination}"}
+
+@router.get("/comprar_tickets_facade")
+def comprar_tickets_facade(destination: str, tickets_requested: int):
+    return ticket_service.buy_tickets(destination, tickets_requested)

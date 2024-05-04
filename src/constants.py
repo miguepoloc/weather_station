@@ -1,7 +1,9 @@
 """This module contains the constants used in the application."""
+from dotenv import load_dotenv
 
 import os
 
+load_dotenv()
 
 class EnvironmentVariables:
     """
