@@ -8,6 +8,7 @@ from src.nodes.factory import NodeCreation, NodoFactory
 from src.schemas import NodeModel, NodeType
 from src.authorizer import get_current_user
 
+
 router = APIRouter()
 
 
@@ -44,3 +45,4 @@ def create_node(
     db.commit()
 
     return node_model
+

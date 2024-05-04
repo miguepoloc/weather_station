@@ -6,6 +6,9 @@ from src.database import get_db
 from src.models import User
 from src.repository import get_user
 from src.users.schemas import UserLogin
+from src.users.ejemplo_Visitor import Employee, SalaryMetricsVisitor
+from src.users.resumen_response import ResumenResponse
+
 
 router = APIRouter()
 
@@ -60,3 +63,20 @@ async def change_password(
     db.commit()
     db.refresh(user)
     return {"status": "success", "data": "Password changed successfully"}
+
+@router.get("/resumen_empleados")
+def resumen_empleados()->ResumenResponse:
+    salary_metrics_visitor=SalaryMetricsVisitor()
+
+
+
+    employees = [
+    Employee("Juan", 3000),
+    Employee("María", 4000),
+    Employee("Pedro", 3500),
+    ]
+
+    for employee in employees:
+     employee.accept(salary_metrics_visitor)
+
+    return salary_metrics_visitor.calculate_metrics()
