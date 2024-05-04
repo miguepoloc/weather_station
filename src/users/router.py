@@ -1,11 +1,11 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
-from authorizer import Hasher, Authorizer
-from database import get_db
-from models import User
-from repository import get_user
-from users.schemas import UserLogin
+from src.authorizer import Hasher, Authorizer
+from src.database import get_db
+from src.models import User
+from src.repository import get_user
+from src.users.schemas import UserLogin
 
 from src.users.state import get_estado
 

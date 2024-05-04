@@ -1,12 +1,12 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
-from data.observer import ConsoleObserver, EmailObserver, NodeSubject, SmsObserver
-from data.strategy import NodesDataStrategy
-from data.utils import get_strategy_format_data
-from database import get_db
-from models import NodesStorage
-from schemas import NodesStorageModel
+from src.data.observer import ConsoleObserver, EmailObserver, NodeSubject, SmsObserver
+from src.data.strategy import NodesDataStrategy
+from src.data.utils import get_strategy_format_data
+from src.database import get_db
+from src.models import NodesStorage
+from src.schemas import NodesStorageModel
 
 router = APIRouter()
 

@@ -2,7 +2,7 @@
 
 from typing import Optional
 
-from models import User
+from src.models import User
 from sqlalchemy.orm import Session
 
 

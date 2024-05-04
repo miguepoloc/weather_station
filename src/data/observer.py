@@ -3,8 +3,8 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from datetime import datetime
 
-from models import NodesStorage
-from send_email import send_email
+from src.models import NodesStorage
+from src.send_email import send_email
 
 
 class Observer(ABC):

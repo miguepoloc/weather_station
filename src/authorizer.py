@@ -9,7 +9,7 @@ from fastapi import Depends, HTTPException, Request, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from passlib.context import CryptContext
 
-from constants import EnvironmentVariables
+from src.constants import EnvironmentVariables
 
 security = HTTPBearer()
 
