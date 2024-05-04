@@ -12,7 +12,7 @@ class EnvironmentVariables:
     """
 
     SECRET_API_KEY: str = os.getenv("SECRET_API_KEY")  # type: ignore
-    TOKEN_API_EXPIRATION: int = int(os.getenv("TOKEN_API_EXPIRATION"))  # type: ignore
+    TOKEN_API_EXPIRATION: int = int(3600)  # type: ignore
     ENVIRONMENT: str = os.getenv("ENVIRONMENT")  # type: ignore
     DEBUG: bool = os.getenv("DEBUG")  # type: ignore
     AWS_S3_BUCKET_NAME: str = os.getenv("ENV_BUCKET_NAME")  # type: ignore
