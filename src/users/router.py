@@ -5,7 +5,10 @@ from authorizer import Hasher, Authorizer
 from database import get_db
 from models import User
 from repository import get_user
+from mediator import Mediator
+from mediator import User
 from users.schemas import UserLogin
+from send_email import send_email
 
 router = APIRouter()
 
@@ -60,3 +63,24 @@ async def change_password(
     db.commit()
     db.refresh(user)
     return {"status": "success", "data": "Password changed successfully"}
+
+
+@router.post("/SendEmail")
+def sendEmail()-> None:
+   send_email("ditruhoy@gmail.com","Prueba","<h1>Este es prueba de correo</h1>")
+
+
+@router.post("/StartComunication")
+def startComunication()-> None:
+    mediator = Mediator()
+
+    user1 = User("Alice", mediator)
+    user2 = User("Bob", mediator)
+    user3 = User("Charlie", mediator)
+
+    mediator.add_user(user1)
+    mediator.add_user(user2)
+    mediator.add_user(user3)
+
+    user1.send_message("Hello everyone!")
+    user2.send_message("Hi Alice!")

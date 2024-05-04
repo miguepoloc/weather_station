@@ -65,3 +65,5 @@ def save_data(node_data: NodesStorageModel, db: Session = Depends(get_db)) -> No
 
     node_subject.check_battery()
     return node_data
+
+
