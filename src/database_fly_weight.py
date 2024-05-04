@@ -23,20 +23,20 @@ class Database:
     instances: dict = {}
     instance = None
 
-    def __new__(cls, db_name: str):
-        if db_name not in cls.instances:
+    def __new__(cls, "sistemas_inteligentes": str):
+        if "sistemas_inteligentes" not in cls.instances:
             instance = super().__new__(cls)
             DATABASE_URL = "postgresql://{}:{}@{}:{}/{}".format(
-                os.getenv("DB_USER"),
-                os.getenv("DB_PASS"),
-                os.getenv("DB_HOST"),
-                os.getenv("DB_PORT"),
-                db_name,
+                "read_user",
+                "password",
+                "sistemas-inteligentes.cvqw6muew1ej.us-east-1.rds.amazonaws.com",
+                "5432",
+                "sistemas_inteligentes",
             )
             instance.engine = create_engine(DATABASE_URL)
             instance.session = sessionmaker(autocommit=False, autoflush=False, bind=instance.engine)
-            cls.instances[db_name] = instance
-        return cls.instances[db_name]
+            cls.instances["sistemas_inteligentes"] = instance
+        return cls.instances["sistemas_inteligentes"]
 
     def connect(self):
         return self.engine.connect()
@@ -50,8 +50,8 @@ class Database:
         return self.session()
 
 
-def get_db(db_name) -> Generator[Session, None, None]:
-    db = Database(db_name)
+def get_db("sistemas_inteligentes") -> Generator[Session, None, None]:
+    db = Database("sistemas_inteligentes")
     db_session = db.session()  # type: ignore
     try:
         yield db_session

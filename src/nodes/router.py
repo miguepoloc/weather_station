@@ -44,3 +44,24 @@ def create_node(
     db.commit()
 
     return node_model
+
+@router.post("/enviar_email")
+async def enviar_email(mensaje: str):
+    implementador_email = MensajeroEmail()
+    mensajero_normal_email = MensajeroNormal(implementador_email)
+    mensajero_normal_email.enviar(mensaje)
+    return {"mensaje": "Correo electrónico enviado correctamente"}
+
+@router.post("/enviar_sms")
+async def enviar_sms(mensaje: str):
+    implementador_sms = MensajeroSMS()
+    mensajero_normal_sms = MensajeroNormal(implementador_sms)
+    mensajero_normal_sms.enviar(mensaje)
+    return {"mensaje": "SMS enviado correctamente"}
+
+@router.post("/enviar_push")
+async def enviar_push(mensaje: str):
+    implementador_push = MensajeroPush()
+    mensajero_normal_push = MensajeroNormal(implementador_push)
+    mensajero_normal_push.enviar(mensaje)
+    return {"mensaje": "Notificación push enviada correctamente"}

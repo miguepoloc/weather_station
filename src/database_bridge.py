@@ -35,11 +35,11 @@ class Database(ABC):
 class PostgreSQL(Database):
     def __init__(self):
         DATABASE_URL = "postgresql://{}:{}@{}:{}/{}".format(
-            os.getenv("DB_USER"),
-            os.getenv("DB_PASS"),
-            os.getenv("DB_HOST"),
-            os.getenv("DB_PORT"),
-            os.getenv("DB_NAME"),
+            "read_user",
+            "password",
+            "sistemas-inteligentes.cvqw6muew1ej.us-east-1.rds.amazonaws.com",
+            "5432",
+            "sistemas_inteligentes",
         )
         self.engine = create_engine(DATABASE_URL)
         self.session = sessionmaker(autocommit=False, autoflush=False, bind=self.engine)
@@ -54,11 +54,11 @@ class PostgreSQL(Database):
 class MySQL(Database):
     def __init__(self):
         DATABASE_URL = "mysql://{}:{}@{}:{}/{}".format(
-            os.getenv("DB_USER"),
-            os.getenv("DB_PASS"),
-            os.getenv("DB_HOST"),
-            os.getenv("DB_PORT"),
-            os.getenv("DB_NAME"),
+            "read_user",
+            "password",
+            "sistemas-inteligentes.cvqw6muew1ej.us-east-1.rds.amazonaws.com",
+            "5432",
+            "sistemas_inteligentes",
         )
         self.engine = create_engine(DATABASE_URL)
         self.session = sessionmaker(autocommit=False, autoflush=False, bind=self.engine)

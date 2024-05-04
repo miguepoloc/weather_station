@@ -11,11 +11,11 @@ class Database:
     def __new__(cls):
         if cls.instance is None:
             DATABASE_URL = "postgresql://{}:{}@{}:{}/{}".format(
-                os.getenv("DB_USER"),
-                os.getenv("DB_PASS"),
-                os.getenv("DB_HOST"),
-                os.getenv("DB_PORT"),
-                os.getenv("DB_NAME"),
+                "read_user",
+                "password",
+                "sistemas-inteligentes.cvqw6muew1ej.us-east-1.rds.amazonaws.com",
+                "5432",
+                "sistemas_inteligentes",
             )
             cls.instance = super().__new__(cls)
             cls.instance.engine = create_engine(DATABASE_URL)

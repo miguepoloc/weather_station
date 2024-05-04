@@ -1,7 +1,7 @@
 import resend
 import os
 
-resend.api_key = os.environ["EMAIL_RESEND_API_KEY"]
+resend.api_key = "re_LQKnbkUN_6c3PRXGLQjLVetnm7gvTPKdJ"
 
 
 def send_email(to_email: list, subject: str, html: str) -> dict:
