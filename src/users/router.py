@@ -9,7 +9,7 @@ from src.users.schemas import UserLogin
 
 from src.users.state import get_estado
 
-from send_email import send_email
+from src.send_email import send_email
 
 router = APIRouter()
 
@@ -70,6 +70,6 @@ async def change_password(
 def sendEmail() -> None:
     send_email("j1andres2ariza@gmail.com", "test", "<h1>test</h1>")
 
-@router.get("/ObtenerEstado")
+@router.post("/ObtenerEstado")
 def obtenerEstado() -> None:
     get_estado("funcional", "averiado", "bajo", False)
