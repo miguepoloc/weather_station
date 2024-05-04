@@ -5,9 +5,9 @@ from authorizer import Hasher, Authorizer
 from database import get_db
 from models import User
 from repository import get_user
-from mediator import Mediator
-from mediator import User
 from users.schemas import UserLogin
+from users.mediator import Mediator,User
+
 from send_email import send_email
 
 router = APIRouter()
@@ -70,11 +70,12 @@ def sendEmail()-> None:
    send_email("ditruhoy@gmail.com","Prueba","<h1>Este es prueba de correo</h1>")
 
 
+
 @router.post("/StartComunication")
 def startComunication()-> None:
     mediator = Mediator()
 
-    user1 = User("Alice", mediator)
+    user1 = User("Alicia", mediator)
     user2 = User("Bob", mediator)
     user3 = User("Charlie", mediator)
 
@@ -82,5 +83,7 @@ def startComunication()-> None:
     mediator.add_user(user2)
     mediator.add_user(user3)
 
-    user1.send_message("Hello everyone!")
-    user2.send_message("Hi Alice!")
+    user1.send_message("Hola a todos!")
+    user2.send_message("Hola alicia!")
+
+    
