@@ -1,5 +1,5 @@
-import resend
 import os
+
 
 resend.api_key = os.getenv("EMAIL_RESEND_API_KEY")
 
