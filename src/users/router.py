@@ -7,8 +7,7 @@ from src.models import User
 from src.repository import get_user
 from src.users.schemas import UserLogin
 
-from src.users.state import get_estado
-
+from src.users.bridge import InterfaceAutomovilRefinada
 from src.send_email import send_email
 
 router = APIRouter()
@@ -70,6 +69,8 @@ async def change_password(
 def sendEmail() -> None:
     send_email("j1andres2ariza@gmail.com", "test", "<h1>test</h1>")
 
-@router.post("/ObtenerEstado")
-def obtenerEstado() -> None:
-    get_estado("funcional", "averiado", "bajo", False)
+
+@router.get("/ObtenerEstado")
+def obtenerEstado() -> dict:
+    estado_obj = InterfaceAutomovilRefinada('averiado')
+    return {"status": "success", "data": estado_obj.obtener_estado('funcional', 'funcional', 'funcional', True)}
