@@ -4,10 +4,12 @@ from fastapi import FastAPI
 from src.data.router import router as data_router
 from src.nodes.router import router as nodes_router
 from src.users.router import router as users_router
+from src.restaurante.router import router as restaurantes_router
 
 load_dotenv()
 
 app = FastAPI()
+app.include_router(restaurantes_router, prefix="/restaurants", tags=["restaurants"])
 app.include_router(nodes_router, prefix="/nodes", tags=["nodes"])
 app.include_router(data_router, prefix="/data", tags=["data"])
 app.include_router(users_router, prefix="/users", tags=["users"])
