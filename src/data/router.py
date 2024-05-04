@@ -7,6 +7,7 @@ from src.data.utils import get_strategy_format_data
 from src.database import get_db
 from src.models import NodesStorage
 from src.schemas import NodesStorageModel
+from src.data.iterador_productos import lista_de_productos, precio_mayor
 
 router = APIRouter()
 
@@ -19,7 +20,7 @@ def get_nodes_data(
     limit: int = 10,
     db: Session = Depends(get_db),
     format: NodesDataStrategy = Depends(get_strategy_format_data),
-) -> list[NodesStorageModel]:
+) -> list:
     nodes_storage: list[NodesStorage] = (
         db.query(NodesStorage)
         .filter(
@@ -65,3 +66,12 @@ def save_data(node_data: NodesStorageModel, db: Session = Depends(get_db)) -> No
 
     node_subject.check_battery()
     return node_data
+
+@router.post("/productos/mayorprecio")
+def mayorprecio () -> int:
+        producto = precio_mayor
+        return lista_de_productos.producto_mas_caro()[1]
+
+
+
+

@@ -19,7 +19,6 @@ class NodeFather(NodeCreation):
         super().__init__(name=name, description=description, latitude=latitude, longitude=longitude)
         self.type = NodeType.MASTER
 
-
 class NodeChild(NodeCreation):
     def __init__(self, name: str, description: Optional[str], latitude: float, longitude: float):
         super().__init__(name=name, description=description, latitude=latitude, longitude=longitude)
