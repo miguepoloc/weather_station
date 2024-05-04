@@ -1,0 +1,17 @@
+spring:
+  profiles:
+    active: dev
+  main:
+    banner-mode: off
+  datasource:
+    url: jdbc:postgresql://sistemas-inteligentes.cvqw6muew1ej.us-east-1.rds.amazonaws.com:5432/sistemas_inteligentes
+    username: read_user
+    password: password
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
