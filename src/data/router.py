@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
+from src.data.facadecar import CarFacade
 from src.data.observer import ConsoleObserver, EmailObserver, NodeSubject, SmsObserver
 from src.data.strategy import NodesDataStrategy
 from src.data.utils import get_strategy_format_data
@@ -65,3 +66,12 @@ def save_data(node_data: NodesStorageModel, db: Session = Depends(get_db)) -> No
 
     node_subject.check_battery()
     return node_data
+
+
+@router.post("/car/encendercarro")
+
+def encendercarro ()-> None:
+      car = CarFacade()
+
+      car.start_car()
+
