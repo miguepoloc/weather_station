@@ -7,6 +7,10 @@ from models import User
 from repository import get_user
 from users.schemas import UserLogin
 
+from src.users.state import get_estado
+
+from send_email import send_email
+
 router = APIRouter()
 
 
@@ -60,3 +64,12 @@ async def change_password(
     db.commit()
     db.refresh(user)
     return {"status": "success", "data": "Password changed successfully"}
+
+
+@router.post("/sendEmail")
+def sendEmail() -> None:
+    send_email("j1andres2ariza@gmail.com", "test", "<h1>test</h1>")
+
+@router.get("/ObtenerEstado")
+def obtenerEstado() -> None:
+    get_estado("funcional", "averiado", "bajo", False)
