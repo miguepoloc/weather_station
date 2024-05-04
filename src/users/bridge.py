@@ -14,27 +14,27 @@ class InterfaceAutomovil(ABC):
 
 class EstadoAutomovil(ABC):
     @abstractmethod
-    def get_state(self, motor: str, llantas: str, aceite: str, bateria: bool) -> object:
+    def get_state(self, motor: str, llantas: str, aceite: str, bateria: bool) -> dict:
         pass
 
 
 class EstadoConcreto(EstadoAutomovil):
-    def get_state(self, motor: str, llantas: str, aceite: str, bateria: bool) -> object:
+    def get_state(self, motor: str, llantas: str, aceite: str, bateria: bool) -> dict:
         return "El automóvil está funcional."
 
 class Funcional(EstadoAutomovil):
-    def get_state(self, motor: str, llantas: str, aceite: str, bateria: bool) -> object:
+    def get_state(self, motor: str, llantas: str, aceite: str, bateria: bool) -> dict:
         return "El automóvil está funcional."
 
 class Averiado(EstadoAutomovil):
-    def get_state(self, motor: str, llantas: str, aceite: str, bateria: bool) -> object:
+    def get_state(self, motor: str, llantas: str, aceite: str, bateria: bool) -> dict:
         if motor == 'averiado' or llantas == 'funcional' or aceite == 'bajo' and not bateria:
             return "El automóvil está averiado."
         else:
             return "El automóvil está funcional."
 
 class Mantenimiento(EstadoAutomovil):
-    def get_state(self, motor: str, llantas: str, aceite: str, bateria: bool) -> object:
+    def get_state(self, motor: str, llantas: str, aceite: str, bateria: bool) -> dict:
         if motor == 'funcional' or llantas == 'desgastadas' or aceite == 'bajo' and bateria:
             return "El automóvil está en mantenimiento."
         else:
@@ -45,7 +45,7 @@ class InterfaceAutomovilRefinada(InterfaceAutomovil):
     def __init__(self, estado: EstadoAutomovil):
         self._estado = estado
 
-    def obtener_estado(self, motor: str, llantas: str, aceite: str, bateria: bool) -> object:
+    def obtener_estado(self, motor: str, llantas: str, aceite: str, bateria: bool) -> dict:
         return self._estado.get_state(motor, llantas, aceite, bateria)
 
 
