@@ -11,12 +11,14 @@ import Foundation
         param2 = nil
     }
     
-    func setParams(_ param1: String, _ param2: String){
-        self.param1 = param1
-        self.param2 = param2
-    }
+     func setParams(_ param1: String, _ param2: String){
+         self.param1 = param1
+         self.param2 = param2
+     }
 }
 
 //uso de singleton
 Singleton.sharedInstance.setParams("juan", "bernier")
 print(Singleton.sharedInstance.param1)
+
+
