@@ -1,4 +1,15 @@
-#from dotenv import load_dotenv
+from fastapi import FastAPI
+from src3.app import router
+
+app = FastAPI()
+
+app.include_router(router, prefix="/app")
+
+
+
+
+
+"""#from dotenv import load_dotenv
 from fastapi import FastAPI
 
 from src2.app import router as app_router
@@ -13,7 +24,7 @@ app = FastAPI()
 app.include_router(app_router, prefix="/app")
 #app.include_router(nodes_router, prefix="/nodes", tags=["nodes"])
 #app.include_router(data_router, prefix="/data", tags=["data"])
-#app.include_router(users_router, prefix="/users", tags=["users"])
+#app.include_router(users_router, prefix="/users", tags=["users"])"""
 
 
 @app.get("/")
