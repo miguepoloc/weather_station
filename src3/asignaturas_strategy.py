@@ -1,4 +1,4 @@
-class Asignatura:
+""""class Asignatura:
     def __init__(self, nombre, creditos):
         self.nombre = nombre
         self.creditos = creditos
@@ -20,6 +20,6 @@ class ContextoGestion:
         self.estrategia = estrategia
 
     def gestionar_disponibilidad(self, asignaturas):
-        return self.estrategia.gestionar_disponibilidad(asignaturas)
+        return self.estrategia.gestionar_disponibilidad(asignaturas)"""
 
 
