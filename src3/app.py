@@ -1,6 +1,6 @@
-from typing import Annotated, List
+from typing import Annotated, Dict, List
 from fastapi import APIRouter, HTTPException, Query,Form
-from src3.funcionalidades import (LibreriaSingleton, MatriculaFactory, RegistroAleatorioStrategy, RegistroAsistencias, RegistroNotasBuilder, RegistroNotasEstudiante,) #ReservaGestion,AsistenciaLista, BibliotecaLibros, Adapter,,Asignatura, MatriculaEstudiante, CreditosAsignatura,)
+from src3.funcionalidades import ( Estudiante, LibreriaSingleton, MatriculaFactory, RegistroAleatorioStrategy, RegistroAsistencias, Student, SubjectBuilder) 
 from pydantic import BaseModel
 
 router = APIRouter()
@@ -17,7 +17,7 @@ async def matricular_estudiante(nombre: str) -> dict:
 
 @router.get("/estudiantes/")
 async def listar_estudiantes() -> List[dict]:
-    return [{"id": estudiante.id, "nombre": estudiante.nombre} for estudiante in estudiantes_inscritos]
+    return [{"id": int(estudiante.id), "nombre": estudiante.nombre} for estudiante in estudiantes_inscritos]
 
 #strategy
 
@@ -68,69 +68,22 @@ async def liberar_libro(libro_id: int) -> dict:
 async def obtener_libros() -> dict:
     return {"libros": libreria.obtener_libros()}
 
+#builder
 
+builder = SubjectBuilder()
 
-"""@router.get("/biblioteca/")
-async def libros_biblioteca(id_libro: str):
-    return BibliotecaLibros(id_libro).ejecutar()
+class Grades(BaseModel):
+    name: str
+    grades: Dict[str, float]
 
-class RegistroNotasEstudianteModel(BaseModel):
-    nombre_estudiante: str
-    asignatura: str
-    nota: float
+@router.post("/asignacionNotas/{subject}/")
+async def assign_grades(subject: str, grades: List[Grades]) -> dict:
+    for grade in grades:
+        student = Student(name=grade.name, grades=grade.grades)
+        builder.assign_grades(student, subject)
+    return {"status": "Notas agregadas de manera Exitosa"}
 
-@router.post("/registro_notas/")
-async def registrar_notas(notas: RegistroNotasEstudianteModel):
-    registro_notas = RegistroNotasBuilder() \
-                        .agregar_nota(notas.nombre_estudiante, notas.asignatura, notas.nota) \
-                        .build()
-    return registro_notas.obtener_registro()"""
+@router.get("/Notas/{subject}/")
+async def get_grades(subject: str) -> dict:
+    return {"grades": builder.get_grades().get(subject, [])}
 
-
-
-"""asignaturas_disponibles = [
-    Asignatura(nombre="Matemáticas", creditos=4),
-    Asignatura(nombre="Historia", creditos=3),
-    Asignatura(nombre="Literatura", creditos=2),
-    Asignatura(nombre="Ciencias", creditos=3),
-    Asignatura(nombre="Arte", creditos=2)
-]
-
-estrategia_seleccion = EstrategiaSeleccionSimple()
-seleccion_asignaturas = SeleccionAsignaturas(estrategia_seleccion)
-
-class AsignaturaSeleccionada(BaseModel):
-    nombre: str
-
-@router.post("/seleccionar/")
-async def seleccionar_asignatura(asignatura: AsignaturaSeleccionada):
-    if seleccion_asignaturas.seleccionar_asignatura(asignaturas_disponibles, seleccion_asignaturas.seleccionadas, asignatura.nombre):
-        return {"mensaje": f"Asignatura {asignatura.nombre} seleccionada exitosamente"}
-    else:
-        raise HTTPException(status_code=400, detail="No se puede seleccionar la asignatura, supera el límite de créditos")
-
-@router.get("/total_creditos/")
-async def obtener_total_creditos():
-    return {"total_creditos": estrategia_seleccion.total_creditos(seleccion_asignaturas.seleccionadas)}"""
-
-
-
-
-"""
-
-class RegistroNotasEstudianteModel(BaseModel):
-    nombre_estudiante: str
-    asignatura: str
-    nota: float
-
-@router.post("/registro_notas/")
-async def registrar_notas(notas: RegistroNotasEstudianteModel):
-    registro_notas = RegistroNotasEstudiante(
-        notas.nombre_estudiante, notas.asignatura, notas.nota
-    )
-    return registro_notas.registrar_notas()
-"""
-
-"""@router.get("/reserva/")
-async def gestion_reserva():
-    return ReservaGestion().ejecutar()"""

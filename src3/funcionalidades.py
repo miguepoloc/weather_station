@@ -1,15 +1,13 @@
 import uuid
-from src3.asistencia_adapter import AsistenciaClases
-#from src3.notas_builder import RegistroNotas, RegistroNotasBuilder
-#from src3.estudiantes_factory import FabricaEstudiante, FabricaAsignatura
-#from src3.biblioteca_singleton import SingletonBiblioteca
-#from src3.asignaturas_strategy import ContextoGestion, EstrategiaDisponibilidadClases
 from pydantic import BaseModel
-from typing import List
+from typing import Dict, List
 import random
 
 
 ##Aqui comienza el patron FActory ################################
+
+from typing import List
+import uuid
 
 class Estudiante:
     def __init__(self, nombre: str) -> None:
@@ -121,48 +119,27 @@ class LibreriaSingleton:
 
 #aqui comienza el patron builder ################################
 
-class RegistroNotasEstudiante(BaseModel):
-    nombre_estudiante: str
-    asignatura: str
-    nota: float
+class Student:
+    def __init__(self, name: str, grades: Dict[str, float]) -> None:
+        self.name = name
+        self.grades = grades
 
-class RegistroNotasBuilder:
-    def __init__(self):
-        self.registro_notas = RegistroNotas()
+class SubjectBuilder:
+    def __init__(self) -> None:
+        self._subject = {}
 
-    def agregar_nota(self, nombre_estudiante:str, asignatura:str, nota:float):
-        self.registro_notas.agregar_nota(nombre_estudiante, asignatura, nota)
-        return self
+    def assign_grades(self, student: Student, subject: str) -> None:
+        if subject not in self._subject:
+            self._subject[subject] = []
 
-    def build(self):
-        return self.registro_notas
+        self._subject[subject].append(student)
 
-class RegistroNotas:
-    def __init__(self):
-        self.registro = []
-
-    def agregar_nota(self, nombre_estudiante:str, asignatura:str, nota:float):
-        self.registro.append({"nombre_estudiante": nombre_estudiante, "asignatura": asignatura, "nota": nota})
-
-    def obtener_registro(self):
-        return self.registro
+    def get_grades(self) -> Dict[str, List[Dict[str, float]]]:
+        return {subject: [{student.name: student.grades} for student in students] for subject, students in self._subject.items()}
 
 #aqui termina el patron builder ################################
 
 
-
-
-"""class RegistroNotasEstudiante:
-    def __init__(self, nombre_estudiante: str, asignatura: str, nota: float):
-        self.nombre_estudiante = nombre_estudiante
-        self.asignatura = asignatura
-        self.nota = nota
-
-    def registrar_notas(self):
-        registro_builder = RegistroNotasBuilder()
-        registro_builder \
-            .agregar_nota(self.nombre_estudiante, self.asignatura, self.nota)
-        return "Nota registrada correctamente"""
 
 
 
