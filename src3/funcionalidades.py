@@ -1,148 +1,156 @@
+import uuid
 from src3.asistencia_adapter import AsistenciaClases
-from src3.builder import RegistroNotas, RegistroNotasBuilder
+#from src3.notas_builder import RegistroNotas, RegistroNotasBuilder
 #from src3.estudiantes_factory import FabricaEstudiante, FabricaAsignatura
-from src3.biblioteca_singleton import SingletonBiblioteca
+#from src3.biblioteca_singleton import SingletonBiblioteca
 #from src3.asignaturas_strategy import ContextoGestion, EstrategiaDisponibilidadClases
 from pydantic import BaseModel
+from typing import List
+import random
 
 
-##Aqui comienza el patron FActory
+##Aqui comienza el patron FActory ################################
 
 class Estudiante:
-    def __init__(self, nombre: str, edad: int):
+    def __init__(self, nombre: str) -> None:
+        self.id = hash(uuid.uuid4())
         self.nombre = nombre
-        self.edad = edad
+        self.matriculado = False
 
-class FabricaEstudiante:
-    def matricular(self, nombre: str, edad: int):
-        return Estudiante(nombre, edad)
+    def matricular(self) -> None:
+        self.matriculado = True
 
-    def matricular2(self):
-        return f"Estudiante {self} matriculado"
+class MatriculaFactory:
+    @staticmethod
+    def crear_estudiante(nombre: str) -> Estudiante:
+        return Estudiante(nombre)
 
-class MatriculaEstudiante:
-    def __init__(self):
-        self.fabrica_estudiante = FabricaEstudiante()
+#aqui termina el patron factory ################################
 
-    def ejecutar(self, nombre: str, edad: int):
-        return self.fabrica_estudiante.matricular(nombre, edad)
+#aqui comienza el patron strategy ################################
 
-class Asignatura:
-    def __init__(self, nombre: str, creditos: int):
-        self.nombre = nombre
-        self.creditos = creditos
+class AsignaturasStrategy:
+    def __init__(self, max_creditos: int) -> None:
+        self.max_creditos = max_creditos
 
-    def obtener_creditos(self):
-        return f"El estudiante {self.nombre} verá en este semestre {self.creditos} créditos"
-
-class FabricaAsignatura:
-    def crear_asignatura(self, nombre: str, creditos: int):
-        return Asignatura(nombre, creditos)
-
-class CreditosAsignatura:
-    def __init__(self):
-        self.fabrica_asignatura = FabricaAsignatura()
-
-    def ejecutar(self, nombre: str, creditos: int):
-        asignatura = self.fabrica_asignatura.crear_asignatura(nombre, creditos)
-        return asignatura
-
-
-#aqui termina el patron factory
-
-#aqui comienza el patron strategy
-
-class Asignatura:
-    def __init__(self, nombre: str, creditos: int):
-        self.nombre = nombre
-        self.creditos = creditos
-
-class EstrategiaSeleccion:
-    def seleccionar_asignatura(self, asignaturas_disponibles, asignaturas_seleccionadas):
+    def generar_asignaturas(self) -> List[str]:
         pass
 
-class SeleccionAsignaturas:
-    def __init__(self, estrategia):
-        self.estrategia = estrategia
+class RegistroAleatorioStrategy(AsignaturasStrategy):
+    def generar_asignaturas(self) -> List[str]:
+        asignaturas = ["Matemáticas", "Ciencias", "Historia", "Literatura", "Arte"]
+        creditos_disponibles = self.max_creditos
+        asignaturas_elegidas = []
 
-    def seleccionar_asignatura(self, asignaturas_disponibles, asignaturas_seleccionadas, nombre_asignatura):
-        return self.estrategia.seleccionar_asignatura(asignaturas_disponibles, asignaturas_seleccionadas, nombre_asignatura)
+        while creditos_disponibles > 0 and len(asignaturas) > 0:
+            asignatura = random.choice(asignaturas)
+            creditos = random.randint(1, min(3, creditos_disponibles))
+            asignaturas_elegidas.append(f"{asignatura} ({creditos} créditos)")
+            creditos_disponibles -= creditos
+            asignaturas.remove(asignatura)
 
-class EstrategiaSeleccionSimple(EstrategiaSeleccion):
-    def seleccionar_asignatura(self, asignaturas_disponibles, asignaturas_seleccionadas, nombre_asignatura):
-        for asignatura in asignaturas_disponibles:
-            if asignatura.nombre == nombre_asignatura:
-                if self.total_creditos(asignaturas_seleccionadas) + asignatura.creditos <= 10:
-                    asignaturas_seleccionadas.append(asignatura)
-                    return True
-                else:
-                    return False
-        return False
+        return asignaturas_elegidas
 
-    def total_creditos(self, asignaturas_seleccionadas):
-        return sum(asignatura.creditos for asignatura in asignaturas_seleccionadas)
 
-class EstrategiaDisponibilidad:
-    def gestionar_disponibilidad(self, asignaturas):
-        pass
+#aqui termina el patron strategy ################################
 
-class ContextoGestion:
-    def __init__(self, estrategia):
-        self.estrategia = estrategia
 
-    def gestionar_disponibilidad(self, asignaturas):
-        return self.estrategia.gestionar_disponibilidad(asignaturas)
+#aqui comienza el patron adapter################################
 
-class EstrategiaDisponibilidadClases(EstrategiaDisponibilidad):
-    def gestionar_disponibilidad(self, asignaturas):
-        total_creditos = sum(asignatura.creditos for asignatura in asignaturas)
-        if total_creditos <= 10:
-            return f"Clases disponibles este semestre. Total de créditos: {total_creditos}"
+class RegistroAsistencias:
+    def __init__(self, asignaturas: List[str]) -> None:
+        self.asignaturas = {asignatura: [] for asignatura in asignaturas}
+
+    def registrar_asistencia(self, asignatura: str, estudiante: str) -> None:
+        if asignatura in self.asignaturas:
+            self.asignaturas[asignatura].append(estudiante)
+
+    def obtener_asistencias(self) -> dict:
+        return self.asignaturas
+# aqui termina el patron adapter ################################
+
+#aqui comienza el patron singleton ################################
+
+class Libro:
+    def __init__(self, titulo: str) -> None:
+        self.titulo = titulo
+        self.apartado = False
+
+    def reservar(self) -> None:
+        self.apartado = True
+
+    def liberar(self) -> None:
+        self.apartado = False
+
+class LibreriaSingleton:
+    _instance = None
+
+    def __new__(cls, *args, **kwargs):
+        if not cls._instance:
+            cls._instance = super().__new__(cls)
+            cls._instance.libros = [Libro(f"Libro {i+1}") for i in range(10)]
+        return cls._instance
+
+    def obtener_libros(self) -> list:
+        return [{"titulo": libro.titulo, "apartado": libro.apartado} for libro in self.libros]
+
+    def reservar_libro(self, libro_id: int) -> str:
+        if libro_id < 1 or libro_id > 10:
+            return "El ID del libro debe estar entre 1 y 10"
+
+        libro = self.libros[libro_id - 1]
+        if not libro.apartado:
+            libro.reservar()
+            return f"Libro {libro.titulo} reservado"
         else:
-            return f"No es posible inscribirse a más clases. Total de créditos excede 10."
+            return f"El libro {libro.titulo} ya está reservado"
 
-class DisponibilidadGestion:
-    def __init__(self, asignaturas):
-        self.contexto = ContextoGestion(EstrategiaDisponibilidadClases())
-        self.asignaturas = asignaturas
+    def liberar_libro(self, libro_id: int) -> str:
+        if libro_id < 1 or libro_id > 10:
+            return "El ID del libro debe estar entre 1 y 10"
 
-    def ejecutar(self):
-        return self.contexto.gestionar_disponibilidad(self.asignaturas)
-
-
-#aqui termina el patron strategy
-
-#aqui comienza el patron adapter
-
-class Target:
+        libro = self.libros[libro_id - 1]
+        if libro.apartado:
+            libro.liberar()
+            return f"Reserva del libro {libro.titulo} liberada"
+        else:
+            return f"El libro {libro.titulo} no está reservado"
 
 
-    def registrar_asistencia(self, clase: str, estudiantes: list) -> str:
-        pass
+#aqui termina el patron singleton ################################
 
+#aqui comienza el patron builder ################################
 
-class Adaptee:
-    def registrar(self, clase: str, estudiantes: list) -> str:
-        pass
+class RegistroNotasEstudiante(BaseModel):
+    nombre_estudiante: str
+    asignatura: str
+    nota: float
 
-
-class Adapter(Target, Adaptee):
-    def registrar_asistencia(self, clase: str, estudiantes: list) -> str:
-        return self.registrar(clase, estudiantes)
-
-
-def client_code(target: "Target", clase: str, estudiantes: list) -> None:
-    print(target.registrar_asistencia(clase, estudiantes))
-
-# aqui termina el patron adapter
-
-
-class BibliotecaLibros:
+class RegistroNotasBuilder:
     def __init__(self):
-        self.singleton = SingletonBiblioteca()
+        self.registro_notas = RegistroNotas()
 
-    def ejecutar(self):
-        return self.singleton.obtener_libros()
+    def agregar_nota(self, nombre_estudiante:str, asignatura:str, nota:float):
+        self.registro_notas.agregar_nota(nombre_estudiante, asignatura, nota)
+        return self
+
+    def build(self):
+        return self.registro_notas
+
+class RegistroNotas:
+    def __init__(self):
+        self.registro = []
+
+    def agregar_nota(self, nombre_estudiante:str, asignatura:str, nota:float):
+        self.registro.append({"nombre_estudiante": nombre_estudiante, "asignatura": asignatura, "nota": nota})
+
+    def obtener_registro(self):
+        return self.registro
+
+#aqui termina el patron builder ################################
+
+
+
 
 """class RegistroNotasEstudiante:
     def __init__(self, nombre_estudiante: str, asignatura: str, nota: float):
@@ -156,21 +164,7 @@ class BibliotecaLibros:
             .agregar_nota(self.nombre_estudiante, self.asignatura, self.nota)
         return "Nota registrada correctamente"""
 
-class RegistroNotasEstudiante(BaseModel):
-    nombre_estudiante: str
-    asignatura: str
-    nota: float
 
-class RegistroNotasBuilder:
-    def __init__(self):
-        self.registro_notas = RegistroNotas()
-
-    def agregar_nota(self, nombre_estudiante, asignatura, nota):
-        self.registro_notas.agregar_nota(nombre_estudiante, asignatura, nota)
-        return self
-
-    def build(self):
-        return self.registro_notas
 
 
 
