@@ -18,23 +18,23 @@ class Estudiante:
     def matricular(self) -> None:
         self.matriculado = True
 
-class MatriculaFactory:
+class MatriculaFactory: ##-->
     @staticmethod
-    def crear_estudiante(nombre: str) -> Estudiante:
+    def crear_estudiante(nombre: str) -> Estudiante: ##metodo estatico que sera llamado para crear estudiantes
         return Estudiante(nombre)
 
 #aqui termina el patron factory ################################
 
 #aqui comienza el patron strategy ################################
 
-class AsignaturasStrategy:
+class AsignaturasStrategy:#-->L
     def __init__(self, max_creditos: int) -> None:
         self.max_creditos = max_creditos
 
     def generar_asignaturas(self) -> List[str]:
         pass
 
-class RegistroAleatorioStrategy(AsignaturasStrategy):
+class RegistroAleatorioStrategy(AsignaturasStrategy): #O->Logica algoritmica que puede ser ajustada o ampliada con otras acorde a las necesidades
     def generar_asignaturas(self) -> List[str]:
         asignaturas = ["Matemáticas", "Ciencias", "Historia", "Literatura", "Arte"]
         creditos_disponibles = self.max_creditos
@@ -55,7 +55,7 @@ class RegistroAleatorioStrategy(AsignaturasStrategy):
 
 #aqui comienza el patron adapter################################
 
-class RegistroAsistencias:
+class RegistroAsistencias: ##D--->
     def __init__(self, asignaturas: List[str]) -> None:
         self.asignaturas = {asignatura: [] for asignatura in asignaturas}
 
@@ -80,10 +80,10 @@ class Libro:
     def liberar(self) -> None:
         self.apartado = False
 
-class LibreriaSingleton:
+class LibreriaSingleton: ##--->instancia unica y su  punto de acceso
     _instance = None
 
-    def __new__(cls, *args, **kwargs):
+    def __new__(cls, *args, **kwargs): ##-->
         if not cls._instance:
             cls._instance = super().__new__(cls)
             cls._instance.libros = [Libro(f"Libro {i+1}") for i in range(10)]
@@ -124,7 +124,7 @@ class Student:
         self.name = name
         self.grades = grades
 
-class SubjectBuilder:
+class SubjectBuilder: #-->
     def __init__(self) -> None:
         self._subject = {}
 

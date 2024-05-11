@@ -1,6 +1,6 @@
 from typing import Annotated, Dict, List
 from fastapi import APIRouter, HTTPException, Query,Form
-from src3.funcionalidades import ( Estudiante, LibreriaSingleton, MatriculaFactory, RegistroAleatorioStrategy, RegistroAsistencias, Student, SubjectBuilder) 
+from src3.funcionalidades import ( Estudiante, LibreriaSingleton, MatriculaFactory, RegistroAleatorioStrategy, RegistroAsistencias, Student, SubjectBuilder)
 from pydantic import BaseModel
 
 router = APIRouter()
@@ -30,7 +30,7 @@ async def registrar_asignaturas(estudiante_id: int) -> dict:
 
 #Adapter
 
-class RegistroAdapter:
+class RegistroAdapter: #SyD->Adapatador o intermediario de conversion
     def __init__(self, registro: RegistroAsistencias) -> None:
         self.registro = registro
 
@@ -58,15 +58,15 @@ libreria = LibreriaSingleton()
 
 @router.post("/reservar/{libro_id}")
 async def reservar_libro(libro_id: int) -> dict:
-    return {"status": libreria.reservar_libro(libro_id)}
+    return {"status": libreria.reservar_libro(libro_id)}##--> uso de instancia unica en la app: libreria
 
 @router.post("/liberar/{libro_id}")
 async def liberar_libro(libro_id: int) -> dict:
-    return {"status": libreria.liberar_libro(libro_id)}
+    return {"status": libreria.liberar_libro(libro_id)}##--> uso de instancia unica en la app: libreria
 
 @router.get("/libros/")
 async def obtener_libros() -> dict:
-    return {"libros": libreria.obtener_libros()}
+    return {"libros": libreria.obtener_libros()}##--> uso de instancia unica en la app: libreria
 
 #builder
 
@@ -80,10 +80,10 @@ class Grades(BaseModel):
 async def assign_grades(subject: str, grades: List[Grades]) -> dict:
     for grade in grades:
         student = Student(name=grade.name, grades=grade.grades)
-        builder.assign_grades(student, subject)
+        builder.assign_grades(student, subject)##-->
     return {"status": "Notas agregadas de manera Exitosa"}
 
 @router.get("/Notas/{subject}/")
 async def get_grades(subject: str) -> dict:
-    return {"grades": builder.get_grades().get(subject, [])}
+    return {"grades": builder.get_grades().get(subject, [])}#-->
 
