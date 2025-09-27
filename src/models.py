@@ -1,7 +1,16 @@
 from datetime import datetime
 from typing import Any
 
-from sqlalchemy import Boolean, Column, DateTime, Enum, Float, ForeignKey, Integer, String
+from sqlalchemy import (
+    Boolean,
+    Column,
+    DateTime,
+    Enum,
+    Float,
+    ForeignKey,
+    Integer,
+    String,
+)
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
@@ -56,11 +65,15 @@ class NodesStorage(BaseModel):
     id = Column(Integer, primary_key=True)
     node_id = Column(Integer, ForeignKey('nodes.id'), nullable=False)
     date_time = Column(DateTime, default=func.now())
+
+    # Atmospheric data
     temperature = Column(Float, nullable=False)
     humidity = Column(Float, nullable=False)
     pressure = Column(Float, nullable=False)
     altitude = Column(Float, nullable=False)
     humidity_hd38 = Column(Float, nullable=False)
+
+    # Soil data
     humidity_soil = Column(Float, nullable=False)
     temperature_soil = Column(Float, nullable=False)
     conductivity_soil = Column(Float, nullable=False)
@@ -68,13 +81,8 @@ class NodesStorage(BaseModel):
     nitrogen_soil = Column(Float, nullable=False)
     phosphorus_soil = Column(Float, nullable=False)
     potassium_soil = Column(Float, nullable=False)
-    battery_level = Column(Float, nullable=False)
-    temperature_soil = Column(Float, nullable=False)
-    conductivity_soil = Column(Float, nullable=False)
-    ph_soil = Column(Float, nullable=False)
-    nitrogen_soil = Column(Float, nullable=False)
-    phosphorus_soil = Column(Float, nullable=False)
-    potassium_soil = Column(Float, nullable=False)
+
+    # System data
     battery_level = Column(Float, nullable=False)
 
 
