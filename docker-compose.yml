@@ -1,0 +1,15 @@
+# Opcional: solo para probar el Adapter con un motor real de Postgres.
+# La app funciona sin esto (SQLite por defecto). Para usarlo:
+#   docker compose up -d
+#   DB_BACKEND=postgres DATABASE_URL=postgresql://postgres:postgres@localhost:5432/estacion_clima \
+#     uvicorn app.main:app --reload
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: estacion_clima
+    ports:
+      - "5432:5432"

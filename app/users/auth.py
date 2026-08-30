@@ -1,0 +1,32 @@
+"""JWT + hashing. No es uno de los 6 patrones de la clase, pero se conserva porque ya era un
+buen ejemplo real (encapsula la creación/validación de tokens en una sola clase) y hace falta
+para que /users funcione de punta a punta.
+"""
+
+from __future__ import annotations
+
+import time
+
+import jwt
+from passlib.context import CryptContext
+
+from app.constants import EnvironmentVariables
+
+
+class Authorizer:
+    def create_access_token(self, user_id: int) -> str:
+        payload = {"sub": user_id, "expires_at": int(time.time()) + EnvironmentVariables.TOKEN_API_EXPIRATION}
+        return jwt.encode(payload, key=EnvironmentVariables.SECRET_API_KEY, algorithm=EnvironmentVariables.ALGORITHM)
+
+    def validate_and_decode_token(self, token: str) -> dict:
+        return jwt.decode(token, key=EnvironmentVariables.SECRET_API_KEY, algorithms=[EnvironmentVariables.ALGORITHM])
+
+
+class Hasher:
+    _pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+    def verify_password(self, plain_password: str, hashed_password: str) -> bool:
+        return self._pwd_context.verify(plain_password, hashed_password)
+
+    def get_password_hash(self, password: str) -> str:
+        return self._pwd_context.hash(password)
