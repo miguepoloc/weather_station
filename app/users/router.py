@@ -1,22 +1,22 @@
-from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy.orm import Session
+import fastapi
+from sqlalchemy import orm
 
-from app.database import get_db
-from app.models import User
-from app.users.auth import Authorizer, Hasher
-from app.users.schemas import UserCreate, UserLogin
+from app import database
+from app import models
+from app.users import auth
+from app.users import schemas
 
-router = APIRouter()
+router = fastapi.APIRouter()
 
 
-@router.post("/signup", status_code=status.HTTP_201_CREATED)
-def signup(payload: UserCreate, db: Session = Depends(get_db)) -> dict:
-    if db.query(User).filter(User.email == payload.email).first():
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El correo ya está registrado")
+@router.post("/signup", status_code=fastapi.status.HTTP_201_CREATED)
+def signup(payload: schemas.UserCreate, db: orm.Session = fastapi.Depends(database.get_db)) -> dict:
+    if db.query(models.User).filter(models.User.email == payload.email).first():
+        raise fastapi.HTTPException(status_code=fastapi.status.HTTP_400_BAD_REQUEST, detail="El correo ya está registrado")
 
-    user = User(
+    user = models.User(
         email=payload.email,
-        password=Hasher().get_password_hash(payload.password),
+        password=auth.Hasher().get_password_hash(payload.password),
         first_name=payload.first_name,
         last_name=payload.last_name,
     )
@@ -26,10 +26,10 @@ def signup(payload: UserCreate, db: Session = Depends(get_db)) -> dict:
 
 
 @router.post("/login")
-def login(credentials: UserLogin, db: Session = Depends(get_db)) -> dict:
-    user = db.query(User).filter(User.email == credentials.email).first()
-    if not user or not Hasher().verify_password(credentials.password, user.password):
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Credenciales inválidas")
+def login(credentials: schemas.UserLogin, db: orm.Session = fastapi.Depends(database.get_db)) -> dict:
+    user = db.query(models.User).filter(models.User.email == credentials.email).first()
+    if not user or not auth.Hasher().verify_password(credentials.password, user.password):
+        raise fastapi.HTTPException(status_code=fastapi.status.HTTP_400_BAD_REQUEST, detail="Credenciales inválidas")
 
-    token = Authorizer().create_access_token(user_id=user.id)
+    token = auth.Authorizer().create_access_token(user_id=user.id)
     return {"status": "success", "data": token}

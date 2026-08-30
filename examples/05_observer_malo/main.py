@@ -4,9 +4,9 @@ El endpoint llama directo a cada canal de notificación. Agregar un canal nuevo 
 quitar uno (ej. dejar de mandar SMS) significa editar este endpoint.
 """
 
-from fastapi import FastAPI
+import fastapi
 
-app = FastAPI(title="05 - Observer (malo)")
+app = fastapi.FastAPI(title="05 - Observer (malo)")
 
 LOW_BATTERY_THRESHOLD = 10.0
 

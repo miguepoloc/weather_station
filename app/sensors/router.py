@@ -1,22 +1,22 @@
-from datetime import datetime
+import datetime
 
-from fastapi import APIRouter, Depends
-from sqlalchemy.orm import Session
+import fastapi
+from sqlalchemy import orm
 
-from app.database import get_db
-from app.schemas import SensorReadingIn, SensorReadingOut
-from app.sensors.decorators import cache_response, log_execution_time
-from app.sensors.facade import NodeDataFacade
-from app.sensors.repository import SensorReadingRepository
-from app.sensors.strategy import get_strategy
+from app import database
+from app import schemas
+from app.sensors import decorators
+from app.sensors import facade
+from app.sensors import repository
+from app.sensors import strategy
 
-router = APIRouter()
+router = fastapi.APIRouter()
 
 
-@router.post("/", response_model=SensorReadingOut)
-def save_reading(payload: SensorReadingIn, db: Session = Depends(get_db)) -> SensorReadingOut:
-    facade = NodeDataFacade(db)
-    return facade.record_reading(
+@router.post("/", response_model=schemas.SensorReadingOut)
+def save_reading(payload: schemas.SensorReadingIn, db: orm.Session = fastapi.Depends(database.get_db)) -> schemas.SensorReadingOut:
+    node_facade = facade.NodeDataFacade(db)
+    return node_facade.record_reading(
         node_id=payload.node_id,
         temperature=payload.temperature,
         humidity=payload.humidity,
@@ -26,15 +26,15 @@ def save_reading(payload: SensorReadingIn, db: Session = Depends(get_db)) -> Sen
 
 
 @router.get("/")
-@log_execution_time
-@cache_response
+@decorators.log_execution_time
+@decorators.cache_response
 def get_readings(
     node_id: int,
-    start_date: datetime,
-    end_date: datetime,
+    start_date: datetime.datetime,
+    end_date: datetime.datetime,
     format: str = "total",
-    db: Session = Depends(get_db),
+    db: orm.Session = fastapi.Depends(database.get_db),
 ) -> list[dict]:
-    readings = SensorReadingRepository(db).find_by_node(node_id=node_id, start=start_date, end=end_date)
-    strategy = get_strategy(format)
-    return strategy.aggregate(readings)
+    readings = repository.SensorReadingRepository(db).find_by_node(node_id=node_id, start=start_date, end=end_date)
+    aggregation_strategy = strategy.get_strategy(format)
+    return aggregation_strategy.aggregate(readings)

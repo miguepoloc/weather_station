@@ -1,33 +1,32 @@
 from __future__ import annotations
 
-from datetime import datetime
-from typing import Optional
+import datetime
 
-from pydantic import BaseModel, ConfigDict
+import pydantic
 
-from app.models import NodeType
+from app import models
 
 
-class NodeCreate(BaseModel):
+class NodeCreate(pydantic.BaseModel):
     name: str
-    description: Optional[str] = None
+    description: str | None = None
     latitude: float
     longitude: float
-    type_node: NodeType
+    type_node: models.NodeType
 
 
-class NodeOut(BaseModel):
-    model_config = ConfigDict(from_attributes=True)
+class NodeOut(pydantic.BaseModel):
+    model_config = pydantic.ConfigDict(from_attributes=True)
 
     id: int
     name: str
-    type: NodeType
-    description: Optional[str] = None
+    type: models.NodeType
+    description: str | None = None
     latitude: float
     longitude: float
 
 
-class SensorReadingIn(BaseModel):
+class SensorReadingIn(pydantic.BaseModel):
     node_id: int
     temperature: float
     humidity: float
@@ -35,12 +34,12 @@ class SensorReadingIn(BaseModel):
     battery_level: float
 
 
-class SensorReadingOut(BaseModel):
-    model_config = ConfigDict(from_attributes=True)
+class SensorReadingOut(pydantic.BaseModel):
+    model_config = pydantic.ConfigDict(from_attributes=True)
 
-    id: Optional[int] = None
+    id: int | None = None
     node_id: int
-    date_time: Optional[datetime] = None
+    date_time: datetime.datetime | None = None
     temperature: float
     humidity: float
     pressure: float

@@ -11,46 +11,50 @@ worker.
 
 from __future__ import annotations
 
-from abc import ABC, abstractmethod
-from dataclasses import dataclass
+import abc
 
-from app.models import NodeType
+import pydantic
+
+from app import models
 
 
-@dataclass
-class NodeBlueprint:
+class NodeBlueprint(pydantic.BaseModel):
     name: str
     description: str | None
     latitude: float
     longitude: float
-    type: NodeType
+    type: models.NodeType
 
 
-class NodeBuilder(ABC):
-    @abstractmethod
+class NodeBuilder(abc.ABC):
+    @abc.abstractmethod
     def build(self, name: str, description: str | None, latitude: float, longitude: float) -> NodeBlueprint:
         raise NotImplementedError
 
 
 class MasterNodeBuilder(NodeBuilder):
     def build(self, name: str, description: str | None, latitude: float, longitude: float) -> NodeBlueprint:
-        return NodeBlueprint(name=name, description=description, latitude=latitude, longitude=longitude, type=NodeType.MASTER)
+        return NodeBlueprint(
+            name=name, description=description, latitude=latitude, longitude=longitude, type=models.NodeType.MASTER
+        )
 
 
 class WorkerNodeBuilder(NodeBuilder):
     def build(self, name: str, description: str | None, latitude: float, longitude: float) -> NodeBlueprint:
-        return NodeBlueprint(name=name, description=description, latitude=latitude, longitude=longitude, type=NodeType.WORKER)
+        return NodeBlueprint(
+            name=name, description=description, latitude=latitude, longitude=longitude, type=models.NodeType.WORKER
+        )
 
 
 class NodeFactory:
-    _builders: dict[NodeType, NodeBuilder] = {
-        NodeType.MASTER: MasterNodeBuilder(),
-        NodeType.WORKER: WorkerNodeBuilder(),
+    _builders: dict[models.NodeType, NodeBuilder] = {
+        models.NodeType.MASTER: MasterNodeBuilder(),
+        models.NodeType.WORKER: WorkerNodeBuilder(),
     }
 
     @classmethod
     def create_node(
-        cls, type_node: NodeType, name: str, description: str | None, latitude: float, longitude: float
+        cls, type_node: models.NodeType, name: str, description: str | None, latitude: float, longitude: float
     ) -> NodeBlueprint:
         builder = cls._builders.get(type_node)
         if builder is None:

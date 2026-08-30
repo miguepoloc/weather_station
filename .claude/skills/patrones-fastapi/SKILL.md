@@ -44,6 +44,13 @@ patrón" — busca el síntoma primero):
   imprimir + loguear, todo llamado a mano) → candidato a **Observer**.
 - **El mismo bloque de código (timing, logging, caché, permisos) copiado y pegado en varias
   funciones** → candidato a **Decorator**.
+- **Una clase costosa de crear (conexión a BD, cliente HTTP) que se reconstruye sin necesidad en
+  cada llamada**, o donde nada garantiza que solo exista una instancia → candidato a **Singleton**.
+  Rara vez va solo: en `app/database.py` se combina con Factory Method (`DatabaseGatewayFactory`
+  decide SQLite vs. Postgres) y Adapter (`DatabaseGateway` unifica la interfaz) — tres patrones
+  resolviendo tres problemas distintos del mismo módulo. No fuerces esta combinación si tu
+  proyecto no la necesita; úsala como ejemplo de que los patrones se combinan cuando el problema
+  real lo pide, no por acumular conteo.
 
 Si el proyecto no tiene ninguna de estas señales todavía, dilo con franqueza — construir un caso
 malo de juguete que no representa un problema real del proyecto no cumple el objetivo del curso.

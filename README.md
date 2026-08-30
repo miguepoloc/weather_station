@@ -25,6 +25,11 @@ existía) y su **caso bueno** (el mismo problema resuelto).
   porque en la práctica se usan juntos, pero por sí solo no es un patrón GoF — no lo cuentes como
   uno de los 5 obligatorios del proyecto final.
 
+  Bonus, solo en `app/database.py` (no en el ejemplo aislado de Adapter): además de Adapter,
+  `DatabaseGatewayFactory` es un **Factory Method** explícito (decide SQLite vs. Postgres) y
+  `SingletonMeta` aplica **Singleton** para que el engine/pool de conexiones se construya una sola
+  vez. Tres patrones combinados sobre el mismo problema real — ver el docstring del archivo.
+
 - **`.claude/skills/patrones-fastapi/`** — un skill de Claude Code para aplicar este mismo método
   (problema real → caso malo → caso bueno → justificación) a tu propio proyecto final.
 
@@ -75,6 +80,16 @@ mismo patrón corriendo al mismo tiempo y compararlos con `curl` o `/docs`.
 docker build -t estacion-clima .
 docker run --env-file .env -p 8080:8080 estacion-clima
 ```
+
+## Estilo de código
+
+Sigue la [guía de estilo de Google para Python](https://google.github.io/styleguide/pyguide.html)
+en dos puntos concretos, en todo el repo (`app/`, `examples/`, código propio y librerías
+externas): los `import` son de módulos, no de clases ni funciones (`import fastapi` +
+`fastapi.FastAPI()`, no `from fastapi import FastAPI`; `from app import database`, no
+`from app.database import get_db`) — con la excepción documentada por la propia guía para
+`typing`/`collections.abc`. Y las anotaciones opcionales usan `X | None` (PEP 604), nunca
+`Optional[X]`.
 
 ## Origen
 

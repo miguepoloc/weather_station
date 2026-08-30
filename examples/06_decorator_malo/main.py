@@ -6,9 +6,9 @@ El código de negocio (2 líneas) queda enterrado entre 10 líneas de boilerplat
 
 import time
 
-from fastapi import FastAPI
+import fastapi
 
-app = FastAPI(title="06 - Decorator (malo)")
+app = fastapi.FastAPI(title="06 - Decorator (malo)")
 
 _cache: dict = {}
 

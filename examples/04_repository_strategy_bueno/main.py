@@ -5,11 +5,11 @@
 parámetro — agregar un tercer formato es una clase nueva, no un endpoint nuevo.
 """
 
-from abc import ABC, abstractmethod
+import abc
 
-from fastapi import Depends, FastAPI
+import fastapi
 
-app = FastAPI(title="04 - Repository + Strategy (bueno)")
+app = fastapi.FastAPI(title="04 - Repository + Strategy (bueno)")
 
 DB: list[dict] = [
     {"node_id": 1, "hour": 8, "temperature": 20.0},
@@ -23,8 +23,8 @@ class ReadingRepository:
         return [r for r in DB if r["node_id"] == node_id]
 
 
-class AggregationStrategy(ABC):
-    @abstractmethod
+class AggregationStrategy(abc.ABC):
+    @abc.abstractmethod
     def aggregate(self, readings: list[dict]) -> list[dict]:
         raise NotImplementedError
 
@@ -50,5 +50,5 @@ repository = ReadingRepository()
 
 
 @app.get("/readings")
-def get_readings(node_id: int, strategy: AggregationStrategy = Depends(get_strategy)):
+def get_readings(node_id: int, strategy: AggregationStrategy = fastapi.Depends(get_strategy)):
     return strategy.aggregate(repository.find_by_node(node_id))

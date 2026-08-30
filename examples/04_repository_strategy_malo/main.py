@@ -5,9 +5,9 @@ propia forma de agregación (total vs. promedio por hora) — duplicado y difíc
 la lógica de negocio está pegada al almacenamiento.
 """
 
-from fastapi import FastAPI
+import fastapi
 
-app = FastAPI(title="04 - Repository + Strategy (malo)")
+app = fastapi.FastAPI(title="04 - Repository + Strategy (malo)")
 
 DB: list[dict] = [
     {"node_id": 1, "hour": 8, "temperature": 20.0},

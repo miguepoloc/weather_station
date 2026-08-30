@@ -11,22 +11,24 @@ esto.
 
 from __future__ import annotations
 
-from sqlalchemy.orm import Session
+from sqlalchemy import orm
 
-from app.models import SensorReading
-from app.sensors.observer import BatteryAlertSubject, ConsoleObserver, EmailObserver, SmsObserver
-from app.sensors.repository import SensorReadingRepository
+from app import models
+from app.sensors import observer
+from app.sensors import repository
 
 
 class NodeDataFacade:
-    def __init__(self, db: Session) -> None:
-        self._repository = SensorReadingRepository(db)
-        self._battery_alerts = BatteryAlertSubject()
-        self._battery_alerts.attach(ConsoleObserver())
-        self._battery_alerts.attach(EmailObserver())
-        self._battery_alerts.attach(SmsObserver())
+    def __init__(self, db: orm.Session) -> None:
+        self._repository = repository.SensorReadingRepository(db)
+        self._battery_alerts = observer.BatteryAlertSubject()
+        self._battery_alerts.attach(observer.ConsoleObserver())
+        self._battery_alerts.attach(observer.EmailObserver())
+        self._battery_alerts.attach(observer.SmsObserver())
 
-    def record_reading(self, node_id: int, temperature: float, humidity: float, pressure: float, battery_level: float) -> SensorReading:
+    def record_reading(
+        self, node_id: int, temperature: float, humidity: float, pressure: float, battery_level: float
+    ) -> models.SensorReading:
         reading = self._repository.save(
             node_id=node_id, temperature=temperature, humidity=humidity, pressure=pressure, battery_level=battery_level
         )

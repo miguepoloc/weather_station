@@ -5,18 +5,18 @@ su lógica de negocio — el timing y el caché se agregan declarativamente, sin
 la función.
 """
 
+import functools
 import time
-from functools import wraps
 
-from fastapi import FastAPI
+import fastapi
 
-app = FastAPI(title="06 - Decorator (bueno)")
+app = fastapi.FastAPI(title="06 - Decorator (bueno)")
 
 _cache: dict = {}
 
 
 def log_execution_time(func):
-    @wraps(func)
+    @functools.wraps(func)
     def wrapper(*args, **kwargs):
         start = time.perf_counter()
         result = func(*args, **kwargs)
@@ -28,7 +28,7 @@ def log_execution_time(func):
 
 
 def cache_response(func):
-    @wraps(func)
+    @functools.wraps(func)
     def wrapper(*args, **kwargs):
         key = (func.__name__, args, tuple(sorted(kwargs.items())))
         if key in _cache:

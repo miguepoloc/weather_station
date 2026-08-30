@@ -9,33 +9,32 @@ recibe la estrategia correcta según un parámetro y la ejecuta, sin saber cómo
 
 from __future__ import annotations
 
-from abc import ABC, abstractmethod
-from itertools import groupby
-from operator import attrgetter
+import abc
+import itertools
 
-from app.models import SensorReading
+from app import models
 
 
-class AggregationStrategy(ABC):
-    @abstractmethod
-    def aggregate(self, readings: list[SensorReading]) -> list[dict]:
+class AggregationStrategy(abc.ABC):
+    @abc.abstractmethod
+    def aggregate(self, readings: list[models.SensorReading]) -> list[dict]:
         raise NotImplementedError
 
 
 class TotalStrategy(AggregationStrategy):
     """Sin agregación: cada lectura tal cual quedó guardada."""
 
-    def aggregate(self, readings: list[SensorReading]) -> list[dict]:
+    def aggregate(self, readings: list[models.SensorReading]) -> list[dict]:
         return [_to_dict(r) for r in readings]
 
 
 class HourlyAverageStrategy(AggregationStrategy):
     """Una lectura promedio por cada hora del rango."""
 
-    def aggregate(self, readings: list[SensorReading]) -> list[dict]:
+    def aggregate(self, readings: list[models.SensorReading]) -> list[dict]:
         ordered = sorted(readings, key=lambda r: r.date_time.hour)
         result: list[dict] = []
-        for hour, group in groupby(ordered, key=lambda r: r.date_time.hour):
+        for hour, group in itertools.groupby(ordered, key=lambda r: r.date_time.hour):
             group_list = list(group)
             result.append(
                 {
@@ -50,11 +49,11 @@ class HourlyAverageStrategy(AggregationStrategy):
         return result
 
 
-def _avg(readings: list[SensorReading], field: str) -> float:
+def _avg(readings: list[models.SensorReading], field: str) -> float:
     return sum(getattr(r, field) for r in readings) / len(readings)
 
 
-def _to_dict(reading: SensorReading) -> dict:
+def _to_dict(reading: models.SensorReading) -> dict:
     return {
         "id": reading.id,
         "node_id": reading.node_id,

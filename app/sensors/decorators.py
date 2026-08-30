@@ -10,9 +10,9 @@ declarativamente. El endpoint solo tiene su lógica de negocio.
 
 from __future__ import annotations
 
+import functools
 import time
-from functools import wraps
-from typing import Callable
+from collections.abc import Callable
 
 _cache: dict[tuple, object] = {}
 
@@ -23,7 +23,7 @@ _CACHE_IGNORE_KWARGS = {"db"}
 
 
 def log_execution_time(func: Callable) -> Callable:
-    @wraps(func)
+    @functools.wraps(func)
     def wrapper(*args, **kwargs):
         start = time.perf_counter()
         result = func(*args, **kwargs)
@@ -35,7 +35,7 @@ def log_execution_time(func: Callable) -> Callable:
 
 
 def cache_response(func: Callable) -> Callable:
-    @wraps(func)
+    @functools.wraps(func)
     def wrapper(*args, **kwargs):
         relevant_kwargs = {k: v for k, v in kwargs.items() if k not in _CACHE_IGNORE_KWARGS}
         key = (func.__name__, args, tuple(sorted(relevant_kwargs.items())))

@@ -5,9 +5,9 @@ batería + notificar). El endpoint queda en una línea, y cualquier otro caller 
 script, un test) reutiliza exactamente el mismo comportamiento sin copiar nada.
 """
 
-from fastapi import FastAPI
+import fastapi
 
-app = FastAPI(title="03 - Facade (bueno)")
+app = fastapi.FastAPI(title="03 - Facade (bueno)")
 
 LOW_BATTERY_THRESHOLD = 10.0
 

@@ -5,17 +5,16 @@ piden que cree el nodo — agregar un tercer tipo es agregar un builder, no busc
 endpoint que crea nodos.
 """
 
-from abc import ABC, abstractmethod
-from typing import Optional
+import abc
 
-from fastapi import FastAPI, HTTPException
+import fastapi
 
-app = FastAPI(title="01 - Factory Method (bueno)")
+app = fastapi.FastAPI(title="01 - Factory Method (bueno)")
 
 
-class NodeBuilder(ABC):
-    @abstractmethod
-    def build(self, name: str, description: Optional[str], latitude: float, longitude: float) -> dict:
+class NodeBuilder(abc.ABC):
+    @abc.abstractmethod
+    def build(self, name: str, description: str | None, latitude: float, longitude: float) -> dict:
         raise NotImplementedError
 
 
@@ -33,10 +32,10 @@ class NodeFactory:
     _builders: dict[str, NodeBuilder] = {"master": MasterNodeBuilder(), "worker": WorkerNodeBuilder()}
 
     @classmethod
-    def create(cls, type_node: str, name: str, description: Optional[str], latitude: float, longitude: float) -> dict:
+    def create(cls, type_node: str, name: str, description: str | None, latitude: float, longitude: float) -> dict:
         builder = cls._builders.get(type_node)
         if builder is None:
-            raise HTTPException(400, f"Tipo de nodo inválido: {type_node}")
+            raise fastapi.HTTPException(400, f"Tipo de nodo inválido: {type_node}")
         return builder.build(name, description, latitude, longitude)
 
 
@@ -53,7 +52,7 @@ def _register(node: dict) -> dict:
 
 
 @app.post("/nodes")
-def create_node(name: str, type_node: str, description: Optional[str] = None, latitude: float = 0, longitude: float = 0):
+def create_node(name: str, type_node: str, description: str | None = None, latitude: float = 0, longitude: float = 0):
     return _register(NodeFactory.create(type_node, name, description, latitude, longitude))
 
 

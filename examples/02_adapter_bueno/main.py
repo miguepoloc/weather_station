@@ -5,21 +5,21 @@
 motor es una variable de entorno (`DB_BACKEND=postgres`), no una búsqueda y reemplazo.
 """
 
+import abc
 import os
 import sqlite3
-from abc import ABC, abstractmethod
 
-from fastapi import Depends, FastAPI
+import fastapi
 
-app = FastAPI(title="02 - Adapter (bueno)")
+app = fastapi.FastAPI(title="02 - Adapter (bueno)")
 
 
-class DatabaseGateway(ABC):
-    @abstractmethod
+class DatabaseGateway(abc.ABC):
+    @abc.abstractmethod
     def save_reading(self, node_id: int, temperature: float) -> dict:
         raise NotImplementedError
 
-    @abstractmethod
+    @abc.abstractmethod
     def list_readings(self) -> list[dict]:
         raise NotImplementedError
 
@@ -88,10 +88,10 @@ gateway = get_gateway()
 
 
 @app.post("/readings")
-def save_reading(node_id: int, temperature: float, db: DatabaseGateway = Depends(lambda: gateway)):
+def save_reading(node_id: int, temperature: float, db: DatabaseGateway = fastapi.Depends(lambda: gateway)):
     return db.save_reading(node_id, temperature)
 
 
 @app.get("/readings")
-def get_readings(db: DatabaseGateway = Depends(lambda: gateway)):
+def get_readings(db: DatabaseGateway = fastapi.Depends(lambda: gateway)):
     return db.list_readings()

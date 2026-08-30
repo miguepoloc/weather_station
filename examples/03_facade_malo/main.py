@@ -5,9 +5,9 @@ las 3 notificaciones. Si un script de importación masiva necesita el mismo fluj
 este bloque completo.
 """
 
-from fastapi import FastAPI
+import fastapi
 
-app = FastAPI(title="03 - Facade (malo)")
+app = fastapi.FastAPI(title="03 - Facade (malo)")
 
 READINGS: list[dict] = []
 _next_id = 1

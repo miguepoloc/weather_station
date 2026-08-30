@@ -10,16 +10,25 @@ import time
 import bcrypt
 import jwt
 
-from app.constants import EnvironmentVariables
+from app import constants
 
 
 class Authorizer:
     def create_access_token(self, user_id: int) -> str:
-        payload = {"sub": user_id, "expires_at": int(time.time()) + EnvironmentVariables.TOKEN_API_EXPIRATION}
-        return jwt.encode(payload, key=EnvironmentVariables.SECRET_API_KEY, algorithm=EnvironmentVariables.ALGORITHM)
+        payload = {
+            "sub": user_id,
+            "expires_at": int(time.time()) + constants.EnvironmentVariables.TOKEN_API_EXPIRATION,
+        }
+        return jwt.encode(
+            payload, key=constants.EnvironmentVariables.SECRET_API_KEY, algorithm=constants.EnvironmentVariables.ALGORITHM
+        )
 
     def validate_and_decode_token(self, token: str) -> dict:
-        return jwt.decode(token, key=EnvironmentVariables.SECRET_API_KEY, algorithms=[EnvironmentVariables.ALGORITHM])
+        return jwt.decode(
+            token,
+            key=constants.EnvironmentVariables.SECRET_API_KEY,
+            algorithms=[constants.EnvironmentVariables.ALGORITHM],
+        )
 
 
 class Hasher:

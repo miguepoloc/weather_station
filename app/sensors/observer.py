@@ -11,38 +11,38 @@ hacen — agregar un canal nuevo es una línea (`attach(...)`), no un endpoint r
 
 from __future__ import annotations
 
-from abc import ABC, abstractmethod
-from datetime import datetime
+import abc
+import datetime
 
-from app.constants import EnvironmentVariables
-from app.models import SensorReading
-from app.send_email import send_email
+from app import constants
+from app import models
+from app import send_email
 
 LOW_BATTERY_THRESHOLD = 10.0
 
 
-class Observer(ABC):
-    @abstractmethod
-    def update(self, reading: SensorReading) -> None:
+class Observer(abc.ABC):
+    @abc.abstractmethod
+    def update(self, reading: models.SensorReading) -> None:
         raise NotImplementedError
 
 
 class ConsoleObserver(Observer):
-    def update(self, reading: SensorReading) -> None:
+    def update(self, reading: models.SensorReading) -> None:
         print(f"[alerta] batería baja en nodo {reading.node_id}: {reading.battery_level}V")
 
 
 class EmailObserver(Observer):
-    def update(self, reading: SensorReading) -> None:
+    def update(self, reading: models.SensorReading) -> None:
         html = (
             f"<b>Batería baja en el nodo {reading.node_id}</b><br>"
-            f"Nivel: {reading.battery_level}V<br>Fecha: {datetime.utcnow()}"
+            f"Nivel: {reading.battery_level}V<br>Fecha: {datetime.datetime.utcnow()}"
         )
-        send_email(to_email=[EnvironmentVariables.ALERT_EMAIL_TO], subject="Batería baja", html=html)
+        send_email.send(to_email=[constants.EnvironmentVariables.ALERT_EMAIL_TO], subject="Batería baja", html=html)
 
 
 class SmsObserver(Observer):
-    def update(self, reading: SensorReading) -> None:
+    def update(self, reading: models.SensorReading) -> None:
         print(f"[sms simulado] Batería baja en nodo {reading.node_id}: {reading.battery_level}V")
 
 
@@ -53,10 +53,10 @@ class BatteryAlertSubject:
     def attach(self, observer: Observer) -> None:
         self._observers.append(observer)
 
-    def notify(self, reading: SensorReading) -> None:
+    def notify(self, reading: models.SensorReading) -> None:
         for observer in self._observers:
             observer.update(reading)
 
-    def check_battery(self, reading: SensorReading) -> None:
+    def check_battery(self, reading: models.SensorReading) -> None:
         if reading.battery_level < LOW_BATTERY_THRESHOLD:
             self.notify(reading)

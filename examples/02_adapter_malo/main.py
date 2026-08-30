@@ -7,9 +7,9 @@ el cliente de Postgres — y rezar por no dejar ninguna sin tocar.
 
 import sqlite3
 
-from fastapi import FastAPI
+import fastapi
 
-app = FastAPI(title="02 - Adapter (malo)")
+app = fastapi.FastAPI(title="02 - Adapter (malo)")
 
 DB_PATH = "malo.db"
 

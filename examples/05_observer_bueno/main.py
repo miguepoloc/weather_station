@@ -5,17 +5,17 @@ conoce ni la cantidad ni el tipo de canales — agregar Slack es un `attach(Slac
 un endpoint reescrito.
 """
 
-from abc import ABC, abstractmethod
+import abc
 
-from fastapi import FastAPI
+import fastapi
 
-app = FastAPI(title="05 - Observer (bueno)")
+app = fastapi.FastAPI(title="05 - Observer (bueno)")
 
 LOW_BATTERY_THRESHOLD = 10.0
 
 
-class Observer(ABC):
-    @abstractmethod
+class Observer(abc.ABC):
+    @abc.abstractmethod
     def update(self, node_id: int, battery_level: float) -> None:
         raise NotImplementedError
 
