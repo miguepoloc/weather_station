@@ -12,7 +12,8 @@ class EnvironmentVariables:
     DB_BACKEND: str = os.getenv("DB_BACKEND", "sqlite")
     DATABASE_URL: str = os.getenv("DATABASE_URL", "sqlite:///./estacion_clima.db")
 
-    SECRET_API_KEY: str = os.getenv("SECRET_API_KEY", "dev-secret-key-cambiame")
+    # >= 32 bytes: PyJWT reciente advierte (InsecureKeyLengthWarning) con claves HS256 más cortas.
+    SECRET_API_KEY: str = os.getenv("SECRET_API_KEY", "dev-secret-key-cambiame-en-produccion")
     TOKEN_API_EXPIRATION: int = int(os.getenv("TOKEN_API_EXPIRATION", "3600"))
     ALGORITHM: str = os.getenv("ALGORITHM", "HS256")
 

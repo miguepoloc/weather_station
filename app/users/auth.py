@@ -7,8 +7,8 @@ from __future__ import annotations
 
 import time
 
+import bcrypt
 import jwt
-from passlib.context import CryptContext
 
 from app.constants import EnvironmentVariables
 
@@ -23,10 +23,8 @@ class Authorizer:
 
 
 class Hasher:
-    _pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
     def verify_password(self, plain_password: str, hashed_password: str) -> bool:
-        return self._pwd_context.verify(plain_password, hashed_password)
+        return bcrypt.checkpw(plain_password.encode("utf-8"), hashed_password.encode("utf-8"))
 
     def get_password_hash(self, password: str) -> str:
-        return self._pwd_context.hash(password)
+        return bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")

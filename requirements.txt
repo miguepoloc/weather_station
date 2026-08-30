@@ -1,12 +1,11 @@
-fastapi==0.115.6
-pydantic[email]==2.10.4
-uvicorn==0.32.1
-PyJWT==2.10.1
-SQLAlchemy==2.0.36
-resend==2.5.1
-passlib==1.7.4
-bcrypt==4.0.1
-python-dotenv==1.0.1
+fastapi==0.141.1
+pydantic[email]==2.13.5
+uvicorn==0.52.4
+PyJWT==2.13.0
+SQLAlchemy==2.0.52
+resend==2.42.0
+bcrypt==5.0.0
+python-dotenv==1.2.3
 
 # Solo necesario si DB_BACKEND=postgres (por defecto la app usa SQLite, incluido en Python)
-psycopg2-binary==2.9.10
+psycopg2-binary==2.9.12
