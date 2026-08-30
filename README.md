@@ -17,9 +17,13 @@ existía) y su **caso bueno** (el mismo problema resuelto).
   | 01 | Factory Method | [`examples/01_factory_malo`](examples/01_factory_malo) / [`bueno`](examples/01_factory_bueno) |
   | 02 | Adapter | [`examples/02_adapter_malo`](examples/02_adapter_malo) / [`bueno`](examples/02_adapter_bueno) |
   | 03 | Facade | [`examples/03_facade_malo`](examples/03_facade_malo) / [`bueno`](examples/03_facade_bueno) |
-  | 04 | Repository + Strategy | [`examples/04_repository_strategy_malo`](examples/04_repository_strategy_malo) / [`bueno`](examples/04_repository_strategy_bueno) |
+  | 04 | Strategy (+ Repository, bonus no-GoF) | [`examples/04_repository_strategy_malo`](examples/04_repository_strategy_malo) / [`bueno`](examples/04_repository_strategy_bueno) |
   | 05 | Observer | [`examples/05_observer_malo`](examples/05_observer_malo) / [`bueno`](examples/05_observer_bueno) |
   | 06 | Decorator | [`examples/06_decorator_malo`](examples/06_decorator_malo) / [`bueno`](examples/06_decorator_bueno) |
+
+  Los 6 son patrones GoF (los 23 clásicos). Repository viaja junto con Strategy en el módulo 04
+  porque en la práctica se usan juntos, pero por sí solo no es un patrón GoF — no lo cuentes como
+  uno de los 5 obligatorios del proyecto final.
 
 - **`.claude/skills/patrones-fastapi/`** — un skill de Claude Code para aplicar este mismo método
   (problema real → caso malo → caso bueno → justificación) a tu propio proyecto final.

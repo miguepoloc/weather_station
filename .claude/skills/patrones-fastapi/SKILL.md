@@ -34,7 +34,10 @@ patrón" — busca el síntoma primero):
 - **Un endpoint/función que hace 3+ cosas no relacionadas en el mismo bloque** (validar + guardar
   + notificar + loguear, todo junto) → candidato a **Facade**.
 - **Queries o acceso a datos escritos directo en la capa de negocio/HTTP**, difíciles de testear
-  sin una base de datos real → candidato a **Repository**.
+  sin una base de datos real → candidato a **Repository**. **Ojo**: Repository no es uno de los 23
+  patrones GoF (viene de *Patterns of Enterprise Application Architecture*, Fowler) — es buena
+  práctica y vale la pena aplicarlo, pero no cuenta para el mínimo de 5 patrones GoF de la
+  entrega. Combínalo con un patrón GoF real (ej. Strategy para la lógica que el repository expone).
 - **Varias formas de calcular/transformar algo, elegidas con un `if/elif` grande** → candidato a
   **Strategy**.
 - **Un cambio de estado que dispara acciones en varios lugares hardcodeados** (enviar email +
@@ -70,7 +73,8 @@ Por cada patrón, un párrafo corto con esta estructura (igual que se explicó e
 
 ### 5. Checklist antes de entregar
 
-- [ ] Mínimo 5 patrones GoF distintos, cada uno con caso malo Y caso bueno documentados.
+- [ ] Mínimo 5 patrones **GoF** distintos (de los 23 clásicos — Repository, MVC, etc. no cuentan
+      aquí aunque sean buena práctica), cada uno con caso malo Y caso bueno documentados.
 - [ ] Cada patrón resuelve un problema que existía de verdad en el proyecto (no inventado).
 - [ ] El código corre — probado de punta a punta, no solo "compila".
 - [ ] Presentación armada (puede seguir el mismo formato malo→bueno diapositiva por diapositiva).
